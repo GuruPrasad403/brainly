@@ -46,8 +46,7 @@ Brainly is your intelligent "second brain"—a powerful web application designed
 | **Node.js**     | Backend runtime environment         |
 | **Express.js**  | RESTful API development             |
 | **MongoDB Atlas**| Cloud-based NoSQL database         |
-| **Auth0**       | Authentication & authorization      |
-| **dotenv**      | Secure environment variable management |
+|**dotenv**      | Secure environment variable management |
 
 ---
 
