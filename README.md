@@ -88,3 +88,25 @@ Brainly is your intelligent "second brain"—a powerful web application designed
 1. Clone the repo:  
    ```bash
    git clone https://github.com/yourusername/brainly.git
+
+   Install dependencies:
+    npm install
+Create a .env file and add your config:
+
+env
+  ```
+    PORT=8000
+    MONGO_URI=your_mongodb_connection_string
+    AUTH0_CLIENT_ID=your_auth0_client_id
+    AUTH0_DOMAIN=your_auth0_domain
+    Run the server:
+
+npm run dev.
+```
+📄 License
+This project is licensed under the MIT License.
+
+Made with ❤️ for people who want to remember better.
+
+
+Let me know if you want to include installation instructions for the frontend, or a sample `.env
