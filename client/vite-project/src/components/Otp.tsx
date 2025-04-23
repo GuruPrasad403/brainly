@@ -1,0 +1,131 @@
+import React, { ChangeEvent, JSX, useCallback, useState } from "react";
+import Heading from "./Heading";
+import SubHeading from "./SubHeading";
+import Input from "./Input";
+import { types } from "../types/HeadType";
+import { useNavigate } from "react-router-dom";
+import Button from "./Button";
+import Loader from "./Loader";
+import toast from "react-hot-toast";
+
+function Otp():JSX.Element{
+    const [userData,setUserData] = useState<{otp:string}>({
+        otp:"",
+    });
+    const [loading,setLoading] = useState<boolean>(false);
+    const [error,setError] = useState<{otp:string}>({
+        otp:""
+    });
+    const navigate = useNavigate();
+
+    const handelChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setUserData((pre) => ({
+    ...pre,
+    [e.target.name]: e.target.value,
+  }));
+}, [userData,error])
+
+const handelSubmitCheck = useCallback(async () => {
+    setLoading(true);
+  
+    try {
+      const token = localStorage.getItem("Brain-Token");
+      if (!token) {
+        toast.error("User not authenticated. Please login first.");
+        navigate("/signin");
+        return;
+      }
+  
+      const response = await fetch("http://localhost:8000/api/v1/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ otp: userData.otp }),
+      });
+      console.log(response)
+      const data = await response.json();
+      console.log(data)
+      if (data?.msg === "Invalid OTP") {
+        toast.error("Invalid OTP. Please try again.");
+        setError(prev => ({ ...prev, otp: "Incorrect OTP" }));
+      } else if (data?.msg === "Verification Done ✅") {
+        toast.success("OTP Verified Successfully!");
+        setTimeout(() => navigate("/dashboard"), 1000);
+      } else {
+        toast(data?.msg || "Unexpected response.");
+      }
+    } catch (error) {
+      console.log("Error verifying OTP:", error);
+      toast.error("Something went wrong. Try again later.");
+    } finally {
+      setLoading(false);
+    }
+  }, [userData.otp, navigate]);
+  
+const handelSubmitResend = useCallback(async () => {
+    setLoading(true);
+  
+    try {
+      const token = localStorage.getItem("Brain-Token");
+      if (!token) {
+        toast.error("User not authenticated. Please login first.");
+        navigate("/signin");
+        return;
+      }
+  
+      const response = await fetch("http://localhost:8000/api/v1/resend", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const data = await response.json();
+  
+      if (data?.msg?.startsWith("OTP sent to")) {
+        toast.success(data.msg);
+      } else {
+        toast.error(data?.msg || "Failed to resend OTP.");
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      toast.error("Something went wrong. Try again later.");
+    } finally {
+      setLoading(false);
+    }
+  }, [navigate]);
+  
+    return(
+        <div className="flex justify-center items-center text-white w-full h-screen bg-gray-800">
+            <div className="flex justify-around gap-5 flex-col items-center w-5/12 px-10 py-15 rounded-3xl  bg-gray-700">
+                    <div>
+                        <Heading value={"OTP Verification"}/>
+                    </div>
+                    <div>
+                        <Input type={types.text} name="otp" lableName="OTP" placeholder="Please Enter Your 6 Digit OTP " value={userData.otp} error={error?.otp} handelChange={handelChange} />
+                    </div>
+                    <div className="w-full h-full px-12 flex my-2 items-center gap-5 justify-around">
+                        {
+                            !loading ?
+                            (
+                            <>
+                                  <Button value="Check OTP" handelSubmit={ handelSubmitCheck}/>
+                                <Button value="Resend OTP" handelSubmit={handelSubmitResend}/>
+                            
+                            </>  
+                            ) : (<Loader />)
+                        }
+                    </div>
+
+                    <div className="flex justify-start text-left">
+                        <SubHeading value="Please chek your Mail/Spam OTP will expire in 10 minutes"/>
+                    </div>
+            </div>
+        </div>
+    )
+}
+
+export default React.memo(Otp)

@@ -1,0 +1,13 @@
+import React, { JSX }  from "react";
+import { ButtonType } from "../types/HeadType";
+
+function Button(prop:ButtonType):JSX.Element{
+    return(
+        <div onClick={prop?.handelSubmit} className="w-full h-full bg-black text-center rounded-2xl text-md md:text-lg py-2.5 cursor-pointer">
+            {prop?.value}
+        </div>
+    )
+}
+
+
+export default React.memo(Button)
