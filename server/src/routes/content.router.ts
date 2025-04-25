@@ -5,6 +5,7 @@ import { contentSchema } from '../validations/content.validations';
 import { ContentModel } from '../models/content.model';
 import { TagModel } from '../models/types.model';
 import mongoose from 'mongoose';
+import { contentTypes } from '../types/contnet.types';
 
 export const contentRouter = express.Router();
 
@@ -20,61 +21,60 @@ contentRouter.get("/", (req, res, next) => {
   }
 });
 
-// adding content 
-
 contentRouter.post(
-    "/content",
-    authMiddleware,
-    // @ts-ignore
-    async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const userId = (req as any).userId;
-  
-        const valid = contentSchema.safeParse(req.body);
-        if (!valid.success) {
-          return res.status(HttpStatus.BadRequest).json({
-            success: ApiStatus.Error,
-            msg: "Invalid Inputs",
-            error: valid?.error.errors,
-          });
-        }
-  
-        const { link, title, type, tags: tagTitles } = valid.data;
-  
-        // Step 1: Process tag titles into ObjectIds
-        const tagIds = [];
-            // @ts-ignore
-        for (const tagTitle of tagTitles) {
-          let tag = await TagModel.findOne({ title: tagTitle });
-  
-          if (!tag) {
-            tag = await TagModel.create({ title: tagTitle });
-          }
-  
-          tagIds.push(tag._id);
-        }
-  
-        // Step 2: Create the content with the tag IDs
-        const content = await ContentModel.create({
-          userId,
-          link,
-          title,
-          type,
-          tags: tagIds,
-        });
-  
-        return res.status(HttpStatus.Created).json({
-          success: ApiStatus.Success,
-          msg: "Content created successfully",
-          data: content,
-        });
-      } catch (error) {
-        console.error("Error in /content:", error);
-        next(error);
-      }
-    }
-  );
+  "/content",
+  authMiddleware,
+  // @ts-ignore
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).userId;
 
+      const valid = contentSchema.safeParse(req.body);
+      if (!valid.success) {
+        return res.status(HttpStatus.BadRequest).json({
+          success: ApiStatus.Error,
+          msg: "Invalid Inputs",
+          error: valid?.error.errors,
+        });
+      }
+
+      const { link, title, type, description, tags: tagTitles } = valid.data;
+
+  const tagIds = [];
+  if (tagTitles) {
+  for (const tagTitle of tagTitles) {
+    let tag = await TagModel.findOne({ title: tagTitle });
+
+    if (!tag) {
+      tag = await TagModel.create({ title: tagTitle });
+    }
+
+    tagIds.push(tag._id);
+  }
+} else {
+  console.log("No tags provided");
+}
+
+      const content = await ContentModel.create({
+        userId,
+        link,
+        title,
+        type,
+        description, 
+        tags: tagIds,
+      });
+
+      return res.status(HttpStatus.Created).json({
+        success: ApiStatus.Success,
+        msg: "Content created successfully",
+        data: content,
+      });
+    } catch (error) {
+      console.error("Error in /content:", error);
+      next(error);
+    }
+  }
+);
 
 //   update contet 
 
@@ -196,6 +196,7 @@ contentRouter.put("/", authMiddleware,
     }
   );
 
+
   contentRouter.get('/all-info', authMiddleware, 
     // @ts-ignore
     async (req: Request, res: Response, next: NextFunction) => {
@@ -206,7 +207,9 @@ contentRouter.put("/", authMiddleware,
         session.startTransaction();
   
         try {
-          const content = await ContentModel.find({ userId }).session(session);
+          const content = await ContentModel.find({ userId })
+            .populate("tags") 
+            .session(session);
   
           await session.commitTransaction();
           session.endSession();
@@ -239,3 +242,17 @@ contentRouter.put("/", authMiddleware,
     }
   );
   
+  
+  contentRouter.get("/menu-list", authMiddleware, 
+    // @ts-ignore
+    async(req:Request,res:Response,next:NextFunction)=>{
+        try {
+          res.status(HttpStatus.Accepted).json({
+            msg:"Data Feteched",
+            list : contentTypes
+          })
+        } catch (error) {
+          console.log("Error ", Error)
+        }
+    }
+  )

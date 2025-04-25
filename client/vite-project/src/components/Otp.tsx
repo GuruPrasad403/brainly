@@ -98,33 +98,38 @@ const handelSubmitResend = useCallback(async () => {
     }
   }, [navigate]);
   
-    return(
-        <div className="flex justify-center items-center text-white w-full h-screen bg-gray-800">
-            <div className="flex justify-around gap-5 flex-col items-center w-5/12 px-10 py-15 rounded-3xl  bg-gray-700">
-                    <div>
-                        <Heading value={"OTP Verification"}/>
-                    </div>
-                    <div>
-                        <Input type={types.text} name="otp" lableName="OTP" placeholder="Please Enter Your 6 Digit OTP " value={userData.otp} error={error?.otp} handelChange={handelChange} />
-                    </div>
-                    <div className="w-full h-full px-12 flex my-2 items-center gap-5 justify-around">
-                        {
-                            !loading ?
-                            (
-                            <>
-                                  <Button value="Check OTP" handelSubmit={ handelSubmitCheck}/>
-                                <Button value="Resend OTP" handelSubmit={handelSubmitResend}/>
-                            
-                            </>  
-                            ) : (<Loader />)
-                        }
-                    </div>
-
-                    <div className="flex justify-start text-left">
-                        <SubHeading value="Please chek your Mail/Spam OTP will expire in 10 minutes"/>
-                    </div>
-            </div>
-        </div>
+    return(<div className="flex justify-center items-center text-white w-full min-h-screen bg-gray-800 p-4">
+      <div className="flex justify-around gap-4 flex-col items-center w-full max-w-sm md:max-w-md lg:max-w-lg px-4 sm:px-6 py-8 rounded-xl sm:rounded-2xl md:rounded-3xl bg-gray-700 shadow-lg">
+          <div className="w-full text-center">
+              <Heading value={"OTP Verification"}/>
+          </div>
+          <div className="w-full">
+              <Input 
+                  type={types.text} 
+                  name="otp" 
+                  lableName="OTP" 
+                  placeholder="Please Enter Your 6 Digit OTP" 
+                  value={userData.otp} 
+                  error={error?.otp} 
+                  handelChange={handelChange} 
+              />
+          </div>
+          <div className="w-full flex flex-col sm:flex-row items-center gap-3 sm:gap-4 justify-center my-2">
+              {!loading ? (
+                  <>
+                      <Button value="Check OTP" handelSubmit={handelSubmitCheck}/>
+                      <Button value="Resend OTP" handelSubmit={handelSubmitResend}/>
+                  </>
+              ) : (
+                  <Loader />
+              )}
+          </div>
+  
+          <div className="w-96 text-center sm:text-left text-sm sm:text-base">
+              <SubHeading value="Please check your Mail/Spam. OTP will expire in 10 minutes"/>
+          </div>
+      </div>
+  </div>
     )
 }
 

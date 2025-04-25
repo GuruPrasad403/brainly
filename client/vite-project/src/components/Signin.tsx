@@ -3,7 +3,8 @@ import React, {
     JSX,
     useCallback,
     useState,
-    MouseEvent, 
+    MouseEvent,
+    useEffect, 
   } from 'react';
 import Heading from './Heading'
 import SubHeading from './SubHeading'
@@ -88,10 +89,16 @@ const handelSubmit = useCallback(
     },
     [userInfo, navigate]
   );
-  
+  useEffect(()=>{
+    const token = localStorage.getItem("Brain-Token")
+    if(token){
+      toast.success("Well Come Back");
+      navigate("/dashboard");
+    } 
+  }, [])
     return(
         <div className='flex justify-center items-center w-full h-screen bg-gray-800  text-white'>
-            <div className='flex justify-around flex-col items-center rounded-xl m-2  bg-gray-700 p-10'>
+            <div className='flex justify-around flex-col items-center rounded-xl m-2 max-w-96 md:max-w-full  bg-gray-700 p-10'>
                 <div className='flex justify-around items-center flex-col'>
                 <Heading value={"Sign in"}/>
                 <SubHeading value={"Brainly - Your Second Brain Application"} />

@@ -7,7 +7,11 @@ import {HttpError} from './types/status.types'
 import { contentRouter } from './routes/content.router';
 const app  = express();
 // accpect the request from every site
-app.use(cors({ origin: "http://localhost:5173", credentials: true }))
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 // decode the body file to the json formate 
 app.use(express.json())
 // server will be 
