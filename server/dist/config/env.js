@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.JWT_AUTH = exports.MAIL_PORT = exports.MAIL_SECURE = exports.MAIL_USERNAME = exports.MAIL_PASSWORD = exports.MAIL_HOST = exports.db = exports.PORT = void 0;
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.configDotenv)();
+exports.PORT = process.env.PORT || 3000;
+exports.db = process.env.db || "";
+exports.MAIL_HOST = process.env.MAIL_HOST || "";
+exports.MAIL_PASSWORD = process.env.MAIL_PASSWORD || "";
+exports.MAIL_USERNAME = process.env.MAIL_USERNAME || "";
+exports.MAIL_SECURE = process.env.MAIL_SECURE || false;
+exports.MAIL_PORT = process.env.MAIL_PORT || "587";
+exports.JWT_AUTH = process.env.JWT_AUTH || "screect";
