@@ -52,8 +52,20 @@ export type InputTypes = {
     setUser: React.Dispatch<React.SetStateAction<UserType>>;
     addContent:boolean;
     setAddContent : React.Dispatch<React.SetStateAction<boolean>>;
+    viewContent:boolean;
+    setViewContent : React.Dispatch<React.SetStateAction<boolean>>;
     notes : ContentTypes[];
     setNotes:React.Dispatch<React.SetStateAction<ContentTypes[]>>;
+    note: ContentTypes |undefined,
+    setNote:React.Dispatch<React.SetStateAction<ContentTypes | undefined>>,
+    contentData:ContentTypes;
+    setContentData:React.Dispatch<React.SetStateAction<ContentTypes>>;
+    editContent:boolean ;
+    setEditContent :React.Dispatch<React.SetStateAction<boolean>>;
+    tagsInput :string;
+     setTagsInput : React.Dispatch<React.SetStateAction<string>>;
+     copyNotes:ContentTypes[];
+     setCopyNotes :React.Dispatch<React.SetStateAction<ContentTypes[]>>;
   }
   
   export enum contentTypes  {

@@ -7,7 +7,7 @@ function Heading( prop : HeadType):JSX.Element{
         navigate(`/${prop?.link}`)
     },[prop?.link,prop?.linkValue])
     return(
-        <h1 className='text-md   sm:text-lg md:text-xl h-full p-5    font-sans text-center'>
+        <h1 className='text-md   sm:text-lg md:text-2xl h-full p-5    font-sans text-center'>
         {prop?.value} <span className='underline font-semibold cursor-pointer' onClick={handelClick}>{prop?.linkValue}</span>    
         </h1>
     )

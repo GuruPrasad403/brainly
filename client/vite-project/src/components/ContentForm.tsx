@@ -6,9 +6,8 @@ import Input from './Input';
 import { types } from '../types/HeadType';
 import Textarea from './Textarea';
 import Button from './Button';
-import { ContentTypes } from '../types/content.types';
-import toast from 'react-hot-toast';
 import Loader from './Loader';
+import { toast } from 'react-hot-toast';
 
 interface ContentErrorTypes {
   title?: string;
@@ -19,125 +18,128 @@ interface ContentErrorTypes {
 }
 
 function ContentForm(): JSX.Element {
-  const { setAddContent }: any = useInfoContext();
+  const { setAddContent, contentData, setContentData, setEditContent, setViewContent, tagsInput, setTagsInput }: any = useInfoContext();
   const [loading, setLoading] = useState(false);
-
-  const [contentData, setContentData] = useState<ContentTypes>({
-    title: "",
-    link: "",
-    description: "",
-    tags: [],
-    type: ""
-  });
-
-  const [tagsInput, setTagsInput] = useState<string>("");
-
-  const [error, setError] = useState<ContentErrorTypes>({
-    title: "",
-    link: "",
-    description: "",
-    tags: "",
-    type: ""
-  });
+  const [error, setError] = useState<ContentErrorTypes>({});
+  const token = localStorage.getItem("Brain-Token");
 
   const handleRemove = useCallback(() => {
+    setEditContent(true);
+    setViewContent(false);
     setAddContent(false);
-  }, [setAddContent]);
+  }, [setAddContent, setEditContent, setViewContent]);
 
-  const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-      const { name, value } = e.target;
-      setContentData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    },
-    []
-  );
+  const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setContentData((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleTagsChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTagsInput(e.target.value); // Just update the string
+    setTagsInput(e.target.value);
   };
 
   const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setContentData((prev) => ({
+    setContentData((prev: any) => ({
       ...prev,
       type: e.target.value,
     }));
   };
 
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError({});
     try {
-      setLoading(true);
-      setError({}); // Clear previous errors
-
-      const token = localStorage.getItem("Brain-Token");
-
-      // Convert tagsInput to array only on submit
       const formattedTags = tagsInput
         .split(/[, ]+/)
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 0);
+        .map((tag: string) => tag.trim())
+        .filter((tag: string) => tag.length > 0);
 
-      const body = {
+      const isEditing = Boolean(contentData?._id);
+
+      const apiUrl = isEditing
+        ? `http://localhost:8000/api/v1/content?id=${contentData._id}`
+        : `http://localhost:8000/api/v1/content/content`;
+
+      const method = isEditing ? "PUT" : "POST";
+
+      const body = JSON.stringify({
         ...contentData,
-        tags: formattedTags,
-      };
+        tags: isEditing
+          ? contentData.tags.map((tag: any) => (typeof tag === "string" ? tag.trim() : tag.title))
+          : formattedTags,
+      });
 
-      const res = await fetch("http://localhost:8000/api/v1/content/content", {
-        method: "POST",
+      const res = await fetch(apiUrl, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(body),
+        body,
       });
 
       const data = await res.json();
 
-      if (!res.ok) {
+      if (!res.ok || data.success !== "Success") {
         if (Array.isArray(data?.error)) {
           const errorMap: ContentErrorTypes = {};
           data.error.forEach((err: any) => {
-            const field = err.path?.[0];
-            if (field) {
+            let field = err.path?.[0];
+            if (typeof field === "string") {
+              if (field.startsWith("tags")) field = "tags";
               errorMap[field as keyof ContentErrorTypes] = err.message;
             }
           });
           setError(errorMap);
+        toast.error(data?.msg || "Something went wrong.");
+        return
+
         }
-        toast.error(data?.msg || "Failed to create content");
+        toast.success(data?.msg || "Content Updated");
+        setAddContent(false);
+        setViewContent(false)  
+        setEditContent(true)
+        setContentData("")
         return;
       }
 
-      toast.success("Content created successfully!");
-      setContentData({
-        title: "",
-        link: "",
-        description: "",
-        tags: [],
-        type: ""
-      });
-      setTagsInput(""); // Clear tag input
-      setAddContent(false);
-    } catch (err) {
-      console.log(err);
-      toast.error("Something went wrong");
+      toast.success(isEditing ? "Content updated successfully!" : "Content created successfully!");
+      resetForm();
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong. Try again!");
     } finally {
       setLoading(false);
     }
-  }, [contentData, tagsInput, setAddContent]);
+  };
+
+  const resetForm = () => {
+    setContentData({
+      title: "",
+      link: "",
+      description: "",
+      tags: [],
+      type: ""
+    });
+    setTagsInput("");
+    setAddContent(false);
+    setEditContent(false);
+    setViewContent(false);
+  };
 
   return (
-    <div className='flex flex-col bg-gray-700 rounded-2xl w-full max-w-lg text-white px-6 py-6 md:py-8 md:px-10 shadow-lg'>
-      <div className='flex justify-between items-center text-amber-300 font-semibold mb-4'>
-        <SubHeading value={"Create New Memory"} />
-        <div onClick={handleRemove} className='hover:text-amber-200 p-2 cursor-pointer rounded-full'>
-          <GrClose className='text-xl font-bold' />
+    <div className="flex flex-col bg-gray-700 rounded-2xl w-full max-w-lg text-white px-6 py-6 md:py-8 md:px-10 shadow-lg">
+      <div className="flex justify-between items-center text-amber-300 font-semibold mb-4">
+        <SubHeading value={`${contentData?._id ? "Edit Memory" : "Create New Memory"}`} />
+        <div onClick={handleRemove} className="hover:text-amber-200 p-2 cursor-pointer rounded-full">
+          <GrClose className="text-xl font-bold" />
         </div>
       </div>
 
-      <div className='flex flex-col gap-4'>
+      <div className="flex flex-col gap-4">
         <Input {...{ type: types.text, lableName: 'Title', name: 'title', value: contentData.title, placeholder: 'Enter your title', error: error.title || "", handelChange: handleChange }} />
         <Input {...{ type: types.link, lableName: 'Link', name: 'link', value: contentData.link, placeholder: 'Enter your Link', error: error.link || "", handelChange: handleChange }} />
         <Textarea {...{ lableName: 'Description', name: 'description', value: contentData.description, placeholder: 'Enter your Description', error: error.description || "", handelChangeTextarea: handleChange }} />
@@ -170,13 +172,12 @@ function ContentForm(): JSX.Element {
         </div>
       </div>
 
-      <div className='w-full mt-6'>
-      {
-        loading?
-        <Loader /> : 
-        <Button value={'Add Memory'} handelSubmit={handleSubmit} />
-
-      }
+      <div className="w-full mt-6">
+        {loading ? (
+          <Loader />
+        ) : (
+          <Button value={contentData?._id ? 'Update Memory' : 'Add Memory'} handelSubmit={handleSubmit} />
+        )}
       </div>
     </div>
   );

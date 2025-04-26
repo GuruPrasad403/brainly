@@ -11,6 +11,18 @@ export const useInfoContext  = ()=>{
 function UserProvider({ children }: { children: ReactNode }): JSX.Element {
   const [user, setUser] = useState<UserType>(null);
   const [addContent,setAddContent] = useState<boolean>(false)
+  const [editContent,setEditContent] = useState<boolean>(true)
+  const [viewContent,setViewContent] = useState<boolean>(false)
+  const [note,setNote] = useState<ContentTypes>()
+  const [tagsInput, setTagsInput] = useState<string>("");
+  const [copyNotes,setCopyNotes] = useState<ContentTypes[] >([])
+  const [contentData, setContentData] = useState<ContentTypes>({
+      title: "",
+      link: "",
+      description: "",
+      tags: [],
+      type: ""
+    });
   const [notes,setNotes] = useState<ContentTypes[]>([{
     title:"",
     link:"",
@@ -19,7 +31,10 @@ function UserProvider({ children }: { children: ReactNode }): JSX.Element {
     type : ""
   }])
   return (
-    <userContext.Provider value={{ user, setUser, addContent,setAddContent, notes,setNotes}}>
+    <userContext.Provider
+     value={{ user, setUser, addContent,setAddContent, notes,setNotes,viewContent,setViewContent
+    ,note,setNote,contentData,setContentData,editContent,setEditContent,
+    tagsInput, setTagsInput,copyNotes,setCopyNotes}}>
       {children}
     </userContext.Provider>
   );

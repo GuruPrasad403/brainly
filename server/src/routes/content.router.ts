@@ -76,78 +76,77 @@ contentRouter.post(
   }
 );
 
-//   update contet 
-
-contentRouter.put("/", authMiddleware,
-    // @ts-ignore
-    async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const id = req.query.id as string;
-        if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-          return res.status(HttpStatus.BadRequest).json({
-            success: ApiStatus.Error,
-            msg: "Invalid content ID",
-          });
-        }
-  
-        const valid = contentSchema.safeParse(req.body);
-        if (!valid.success) {
-          return res.status(HttpStatus.BadRequest).json({
-            success: ApiStatus.Error,
-            msg: "Invalid Inputs",
-            error: valid.error.errors,
-          });
-        }
-  
-        const session = await mongoose.startSession();
-        session.startTransaction();
-  
-        try {
-          const findContent = await ContentModel.findById(id).session(session);
-          if (!findContent) {
-            await session.abortTransaction();
-            return res.status(HttpStatus.BadRequest).json({
-              msg: "No data to update",
-              success: ApiStatus.Info,
-            });
-          }
-  
-          (findContent as any).title = valid.data.title;
-          (findContent as any).link = valid.data.link;
-          (findContent as any).type = valid.data.type;
-  
-          // If you want to update tags too:
-          if (valid.data.tags) {
-            const tagIds = [];
-            for (const tagTitle of valid.data.tags) {
-              let tag = await TagModel.findOne({ title: tagTitle });
-              if (!tag) tag = await TagModel.create({ title: tagTitle });
-              tagIds.push(tag._id);
-            }
-            (findContent as any).tags = tagIds;
-          }
-  
-          await findContent.save({ session });
-          await session.commitTransaction();
-          session.endSession();
-  
-          return res.status(HttpStatus.Accepted).json({
-            success: ApiStatus.Success,
-            msg: "Content updated successfully",
-            data: findContent,
-          });
-        } catch (error) {
-          await session.abortTransaction();
-          session.endSession();
-          console.error(error);
-          next(error);
-        }
-      } catch (error) {
-        console.error(error);
-        next(error);
-      }
+contentRouter.put("/", authMiddleware, 
+  // @ts-ignore
+  async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.query.id as string;
+    const _id = new mongoose.Types.ObjectId(id);
+    if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(HttpStatus.BadRequest).json({
+        success: ApiStatus.Error,
+        msg: "Invalid content ID",
+      });
     }
-  );
+
+    const valid = contentSchema.safeParse(req.body);
+    if (!valid.success) {
+      return res.status(HttpStatus.BadRequest).json({
+        success: ApiStatus.Error,
+        msg: "Invalid Inputs",
+        error: valid.error.errors,
+      });
+    }
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const findContent = await ContentModel.findById(_id).session(session);
+      if (!findContent) {
+        await session.abortTransaction();
+        return res.status(HttpStatus.BadRequest).json({
+          msg: "No data to update",
+          success: ApiStatus.Info,
+        });
+      }
+
+      (findContent as any).title = valid.data.title;
+      (findContent as any).link = valid.data.link;
+      (findContent as any).type = valid.data.type;
+      (findContent as any).description = valid.data.description; // ✅ Added description update
+
+      if (valid.data.tags) {
+        const tagIds = [];
+        for (const tagTitle of valid.data.tags) {
+          let tag = await TagModel.findOne({ title: tagTitle });
+          if (!tag) tag = await TagModel.create({ title: tagTitle });
+          tagIds.push(tag._id);
+        }
+        (findContent as any).tags = tagIds;
+      }
+
+      await findContent.save({ session });
+      await session.commitTransaction();
+      session.endSession();
+
+      return res.status(HttpStatus.Accepted).json({
+        success: ApiStatus.Success,
+        msg: "Content updated successfully",
+        data: findContent,
+      });
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      console.error(error);
+      next(error);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
   
   contentRouter.delete("/", authMiddleware,
     // @ts-ignore

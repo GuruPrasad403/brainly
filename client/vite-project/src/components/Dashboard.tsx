@@ -3,28 +3,37 @@ import { useInfoContext } from "../context/UserContext";
 import Header from "./Header";
 import AllNotes from "./AllNotes";
 import ContentForm from "./ContentForm";
+import Layer from "./Layer";
+import ContentView from "./ContentView";
 
-function Dashoard():JSX.Element{
-    const {addContent} :any = useInfoContext()
+function Dashboard(): JSX.Element {
+  const { addContent, viewContent }: any = useInfoContext();
 
-    return(
-        <div className="grid relative grid-cols-1 grid-rows-12   bg-gray-800 w-full h-full">
-            {addContent?
-                <div className="fixed inset-0 w-full h-full p-5 flex justify-center items-center z-50  bg-opacity-70 backdrop-blur-sm">
-                <div className="px-5">
-                  <ContentForm />
-                </div>
-              </div>
-                  : null
-            }
-            <div className="row-span-2 md:row-span-1">
-                <Header />
-            </div>
-            <div className="row-span-10 md:row-span-11">
-            <AllNotes />
-            </div>
-        </div>
-    )
+  return (
+    <div className={`flex flex-col relative w-full h-screen bg-gray-800 ${addContent || viewContent ? "overflow-hidden" : "overflow-y-auto"}`}>
+      {/* Overlay layers */}
+      {addContent && (
+        <Layer>
+          <ContentForm />
+        </Layer>
+      )}
+      
+      {viewContent && (
+        <Layer>
+          <ContentView />
+        </Layer>
+      )}
+
+      {/* Main content */}
+      <div className="flex-none w-full">
+        <Header />
+      </div>
+      
+      <div className="flex-grow w-full overflow-y-auto">
+        <AllNotes />
+      </div>
+    </div>
+  );
 }
 
-export default React.memo(Dashoard)
+export default React.memo(Dashboard);
