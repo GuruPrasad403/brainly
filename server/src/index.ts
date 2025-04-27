@@ -43,6 +43,7 @@ app.use((err: Error | HttpError, req: Request, res: Response, next: NextFunction
 
 
   try {
+    console.log(db)
     connetToTheDB(db)
     app.listen(PORT, ()=>{
         console.log("Server is Running @ http://localhost:",PORT)

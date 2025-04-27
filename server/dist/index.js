@@ -40,6 +40,7 @@ app.use((err, req, res, next) => {
     });
 });
 try {
+    console.log(env_1.db);
     (0, db_1.connetToTheDB)(env_1.db);
     app.listen(env_1.PORT, () => {
         console.log("Server is Running @ http://localhost:", env_1.PORT);
