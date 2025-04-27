@@ -45,7 +45,7 @@ authRouter.get("/", (req, res, next) => {
 authRouter.post("/signup", 
 //@ts-ignore
 (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     try {
         const userInput = req === null || req === void 0 ? void 0 : req.body;
         // Validate user input
@@ -62,7 +62,7 @@ authRouter.post("/signup",
         // Generate OTP
         const otp = (0, genrate_util_js_1.default)();
         const hashOtp = yield bcrypt_1.default.hash(otp, 5);
-        const mail = yield (0, sendmail_util_1.sendMail)((_b = valid === null || valid === void 0 ? void 0 : valid.data) === null || _b === void 0 ? void 0 : _b.email, "OTP Verification From Brainly", `<h1>${otp}</h1>`);
+        const mail = yield (0, sendmail_util_1.sendMail)((_b = valid === null || valid === void 0 ? void 0 : valid.data) === null || _b === void 0 ? void 0 : _b.email, otp, `<strong>${(_c = valid === null || valid === void 0 ? void 0 : valid.data) === null || _c === void 0 ? void 0 : _c.name}}</strong>`);
         if (!mail) {
             return res.status(status_types_1.HttpStatus.BadRequest).json({
                 success: status_types_1.ApiStatus.Error,
@@ -77,8 +77,8 @@ authRouter.post("/signup",
             // Create user and OTP document within the session
             const user = yield user_model_1.default.create([
                 {
-                    email: (_c = valid === null || valid === void 0 ? void 0 : valid.data) === null || _c === void 0 ? void 0 : _c.email,
-                    name: (_d = valid === null || valid === void 0 ? void 0 : valid.data) === null || _d === void 0 ? void 0 : _d.name,
+                    email: (_d = valid === null || valid === void 0 ? void 0 : valid.data) === null || _d === void 0 ? void 0 : _d.email,
+                    name: (_e = valid === null || valid === void 0 ? void 0 : valid.data) === null || _e === void 0 ? void 0 : _e.name,
                     password: hashPassword,
                 },
             ], { session });
@@ -225,6 +225,7 @@ authRouter.put("/resend", authMiddleware_1.default,
         const otp = (0, genrate_util_js_1.default)();
         const hashedOtp = yield bcrypt_1.default.hash(otp, 5);
         let emailToSend = null;
+        let name = null;
         // Try to find OTP and populate user email
         let findOtp = yield otp_model_1.OtpsModel.findOne({ userId }, null, { session })
             .populate("userId", "email");
@@ -243,12 +244,13 @@ authRouter.put("/resend", authMiddleware_1.default,
                 });
             }
             emailToSend = findUser.email;
+            name = findUser === null || findUser === void 0 ? void 0 : findUser.name;
             yield otp_model_1.OtpsModel.create([{ userId, otp: hashedOtp }], { session });
         }
         yield session.commitTransaction();
         if (!emailToSend)
             throw new Error("Email not found");
-        yield (0, sendmail_util_1.sendMail)(emailToSend, "Resent OTP Verification", `<h1>${otp}</h1>`);
+        yield (0, sendmail_util_1.sendMail)(emailToSend, otp, `<strong>${name}</strong>`);
         return res.status(status_types_1.HttpStatus.Created).json({
             msg: `OTP sent to ${emailToSend}`,
             success: status_types_1.ApiStatus.Info,

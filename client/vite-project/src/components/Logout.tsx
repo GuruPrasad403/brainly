@@ -13,7 +13,6 @@ function Logout():JSX.Element{
     return (
         <div className='flex justify-center items-center gap-2' onClick={handelClick}> 
         <TbLogout  className="text-3xl mt-1"/><h2 className='text-xl'>Logout</h2>
-
         </div>
     )
 }

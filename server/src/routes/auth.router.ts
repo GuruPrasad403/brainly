@@ -64,8 +64,8 @@ authRouter.post(
   
         const mail = await sendMail(
           valid?.data?.email,
-          "OTP Verification From Brainly",
-          `<h1>${otp}</h1>`
+          otp,
+          `<strong>${valid?.data?.name}}</strong>`
         );
         
         if (!mail) {
@@ -259,7 +259,7 @@ authRouter.put(
         const hashedOtp = await bcrypt.hash(otp, 5);
   
         let emailToSend: string | null = null;
-  
+        let name :string |null = null;
         // Try to find OTP and populate user email
         let findOtp = await OtpsModel.findOne({ userId }, null, { session })
           .populate<{ userId: { email: string } }>("userId", "email");
@@ -279,6 +279,7 @@ authRouter.put(
           }
   
           emailToSend = findUser.email;
+          name = findUser?.name
           await OtpsModel.create([{ userId, otp: hashedOtp }], { session });
         }
   
@@ -286,7 +287,7 @@ authRouter.put(
   
         if (!emailToSend) throw new Error("Email not found");
   
-        await sendMail(emailToSend, "Resent OTP Verification", `<h1>${otp}</h1>`);
+        await sendMail(emailToSend, otp, `<strong>${name}</strong>`);
   
         return res.status(HttpStatus.Created).json({
           msg: `OTP sent to ${emailToSend}`,

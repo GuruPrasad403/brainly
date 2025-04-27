@@ -15,7 +15,7 @@ function AllNotes(): JSX.Element {
   const getData = useCallback(async () => {
     try {
       const token = localStorage.getItem("Brain-Token");
-      const res = await fetch("http://localhost:8000/api/v1/content/all-info", {
+      const res = await fetch("https://brainly-ld5q.onrender.com/api/v1/content/all-info", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +35,7 @@ function AllNotes(): JSX.Element {
       console.error("Unexpected error:", error);
       return [];
     }
-  }, [setNotes,editContent,contentData]);
+  }, [setNotes,editContent,contentData,setContentData]);
 
   useEffect(() => {
     getData();

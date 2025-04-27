@@ -34,7 +34,7 @@ const handelDelete = useCallback(async () => {
     try {
       const token = localStorage.getItem("Brain-Token");
 
-      const res = await fetch(`http://localhost:8000/api/v1/content?id=${note[0]._id}`, {
+      const res = await fetch(`https://brainly-ld5q.onrender.com/api/v1/content?id=${note[0]._id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
