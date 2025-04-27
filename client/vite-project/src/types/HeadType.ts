@@ -2,7 +2,7 @@ import { ChangeEvent, MouseEvent,  } from "react"
 import { ContentTypes } from "./content.types";
 
 export type HeadType={
-    value:string,
+    value?:string,
     link?:string,
     linkValue?:string
 }
@@ -63,9 +63,11 @@ export type InputTypes = {
     editContent:boolean ;
     setEditContent :React.Dispatch<React.SetStateAction<boolean>>;
     tagsInput :string;
-     setTagsInput : React.Dispatch<React.SetStateAction<string>>;
-     copyNotes:ContentTypes[];
-     setCopyNotes :React.Dispatch<React.SetStateAction<ContentTypes[]>>;
+    setTagsInput : React.Dispatch<React.SetStateAction<string>>;
+    copyNotes:ContentTypes[];
+    setCopyNotes :React.Dispatch<React.SetStateAction<ContentTypes[]>>;
+    loading:boolean;
+    setLoading : React.Dispatch<React.SetStateAction<boolean>>;
   }
   
   export enum contentTypes  {

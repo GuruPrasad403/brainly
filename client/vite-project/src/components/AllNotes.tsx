@@ -2,9 +2,10 @@ import React, { JSX, MouseEvent, useCallback, useEffect } from "react";
 import Button from "./Button";
 import { useInfoContext } from "../context/UserContext";
 import Notes from "./Notes";
+import ShimmerNotes from "./ShimmerNotes";
 
 function AllNotes(): JSX.Element {
-  const { addContent, setAddContent, setNotes,setViewContent,editContent,contentData,setContentData,setTagsInput }: any = useInfoContext();
+  const { loading,setLoading,addContent, setAddContent, setNotes,setViewContent,editContent,contentData,setContentData,setTagsInput }: any = useInfoContext();
 
   const handleAddContent = useCallback(() => {
     setContentData("")
@@ -13,6 +14,7 @@ function AllNotes(): JSX.Element {
   }, [setAddContent]);
 
   const getData = useCallback(async () => {
+    setLoading(true)
     try {
       const token = localStorage.getItem("Brain-Token");
       const res = await fetch("https://brainly-ld5q.onrender.com/api/v1/content/all-info", {
@@ -31,8 +33,10 @@ function AllNotes(): JSX.Element {
       }
 
       setNotes(data.content || []);
+      setLoading(false)
     } catch (error) {
       console.error("Unexpected error:", error);
+      setLoading(false)
       return [];
     }
   }, [setNotes,editContent,contentData,setContentData]);
@@ -63,7 +67,9 @@ function AllNotes(): JSX.Element {
       {/* Notes Grid */}
       <div className="mt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 pb-10" onClick={handelClick}>
-          <Notes />
+          {
+            loading ? <ShimmerNotes /> : <Notes />
+          }
         </div>
       </div>
     </div>

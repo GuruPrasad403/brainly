@@ -13,6 +13,7 @@ function UserProvider({ children }: { children: ReactNode }): JSX.Element {
   const [addContent,setAddContent] = useState<boolean>(false)
   const [editContent,setEditContent] = useState<boolean>(true)
   const [viewContent,setViewContent] = useState<boolean>(false)
+  const [loading,setLoading] = useState<boolean>(false)
   const [note,setNote] = useState<ContentTypes>()
   const [tagsInput, setTagsInput] = useState<string>("");
   const [copyNotes,setCopyNotes] = useState<ContentTypes[] >([])
@@ -34,7 +35,8 @@ function UserProvider({ children }: { children: ReactNode }): JSX.Element {
     <userContext.Provider
      value={{ user, setUser, addContent,setAddContent, notes,setNotes,viewContent,setViewContent
     ,note,setNote,contentData,setContentData,editContent,setEditContent,
-    tagsInput, setTagsInput,copyNotes,setCopyNotes}}>
+    tagsInput, setTagsInput,copyNotes,setCopyNotes,
+    loading,setLoading}}>
       {children}
     </userContext.Provider>
   );

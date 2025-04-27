@@ -29,7 +29,7 @@ function Dashboard(): JSX.Element {
         <Header />
       </div>
       
-      <div className="flex-grow w-full overflow-y-auto">
+      <div className="flex-grow w-full overflow-y-auto ">
         <AllNotes />
       </div>
     </div>

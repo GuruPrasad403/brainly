@@ -18,7 +18,7 @@ function Menuitem(){
         console.log(copyNotes)
     },[notes])
     return(
-        <div className='relative flex w-40 text-2xl justify-center items-center font-semibold cursor-pointer' title='Click to Filter the Content'>
+        <div className='relative flex w-full text-2xl justify-center items-center font-semibold cursor-pointer' title='Click to Filter the Content'>
         {open ? 
         <div 
         onClick={handelClickMenu}
