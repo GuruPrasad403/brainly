@@ -139,7 +139,14 @@ exports.contentRouter.put("/", authMiddleware_1.default,
             return res.status(status_types_1.HttpStatus.Accepted).json({
                 success: status_types_1.ApiStatus.Success,
                 msg: "Content updated successfully",
-                data: findContent,
+                data: { _id: findContent._id,
+                    title: findContent.title,
+                    link: findContent.link,
+                    type: findContent.type,
+                    description: findContent.description,
+                    tags: findContent.tags,
+                    userId: findContent.userId,
+                }
             });
         }
         catch (error) {

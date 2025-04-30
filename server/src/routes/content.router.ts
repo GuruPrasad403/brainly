@@ -141,7 +141,14 @@ async (req: Request, res: Response, next: NextFunction) => {
       return res.status(HttpStatus.Accepted).json({
         success: ApiStatus.Success,
         msg: "Content updated successfully",
-        data: findContent,
+        data: { _id: findContent._id,
+          title: findContent.title,
+          link: findContent.link,
+          type: findContent.type,
+          description: findContent.description,
+          tags: findContent.tags,
+          userId: findContent.userId,         
+        }
       });
     } catch (error) {
       await session.abortTransaction();
