@@ -10,6 +10,7 @@
     "predeploy": "yarn add tsx"
   },
   "dependencies": {
+    "@huggingface/inference": "^3.10.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
@@ -25,9 +26,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
     "nodemailer": "^6.10.1",
+    "nodemon": "^3.1.10",
     "shortid": "^2.2.16",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.3",
     "winston": "^3.17.0",
     "zod": "^3.24.3"
   },

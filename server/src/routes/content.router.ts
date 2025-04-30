@@ -6,6 +6,8 @@ import { ContentModel } from '../models/content.model';
 import { TagModel } from '../models/types.model';
 import mongoose from 'mongoose';
 import { contentTypes } from '../types/contnet.types';
+import { getTextEmbedding } from '../utils/huggingface.utils';
+import { cosineSimilarity } from '../utils/cosineSimilarity.utils';
 
 export const contentRouter = express.Router();
 
@@ -54,7 +56,8 @@ contentRouter.post(
 } else {
   console.log("No tags provided");
 }
-
+const fullText = `${title} ${description} ${link}`;
+const embedding = await getTextEmbedding(fullText);
       const content = await ContentModel.create({
         userId,
         link,
@@ -62,6 +65,7 @@ contentRouter.post(
         type,
         description, 
         tags: tagIds,
+        embedding, 
       });
 
       return res.status(HttpStatus.Created).json({
@@ -76,9 +80,9 @@ contentRouter.post(
   }
 );
 
-contentRouter.put("/", authMiddleware, 
-  // @ts-ignore
-  async (req: Request, res: Response, next: NextFunction) => {
+contentRouter.put("/", authMiddleware,
+// @ts-ignore
+async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.query.id as string;
     const _id = new mongoose.Types.ObjectId(id);
@@ -114,7 +118,11 @@ contentRouter.put("/", authMiddleware,
       (findContent as any).title = valid.data.title;
       (findContent as any).link = valid.data.link;
       (findContent as any).type = valid.data.type;
-      (findContent as any).description = valid.data.description; // ✅ Added description update
+      (findContent as any).description = valid.data.description;
+
+      const updatedText = `${valid.data.title} ${valid.data.description} ${valid.data.link}`;
+      const embedding = await getTextEmbedding(updatedText);
+      (findContent as any).embedding = embedding;
 
       if (valid.data.tags) {
         const tagIds = [];
@@ -255,3 +263,44 @@ contentRouter.put("/", authMiddleware,
         }
     }
   )
+
+
+
+
+contentRouter.post("/semantic-search", authMiddleware,
+  // @ts-ignore
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { query } = req.body;
+      const userId = (req as any).userId;
+
+      if (!query || typeof query !== "string") {
+        return res.status(400).json({
+          success: ApiStatus.Error,
+          msg: "Query is required",
+        });
+      }
+
+      const queryEmbedding = await getTextEmbedding(query);
+      const allContent = await ContentModel.find({ userId });
+
+      const ranked = allContent.map(item => {
+        const similarity = cosineSimilarity(queryEmbedding, item.embedding);
+        return { item, similarity };
+      });
+
+      ranked.sort((a, b) => b.similarity - a.similarity);
+
+      const topMatches = ranked.slice(0, 10).map(r => r.item);
+
+      return res.status(200).json({
+        success: ApiStatus.Success,
+        msg: "Semantic results fetched",
+        data: topMatches,
+      });
+    } catch (error) {
+      console.error("Semantic Search Error:", error);
+      next(error);
+    }
+  }
+);

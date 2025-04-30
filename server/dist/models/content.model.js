@@ -13,6 +13,7 @@ const ContentSchema = new mongoose_1.default.Schema({
     description: { type: String, required: true },
     tags: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "TagModel" }],
     userId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "UserModel", required: true },
+    embedding: { type: [Number], required: true }
 });
 const ContentModel = mongoose_1.default.model("ContentModel", ContentSchema);
 exports.ContentModel = ContentModel;

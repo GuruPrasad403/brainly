@@ -21,6 +21,8 @@ const content_model_1 = require("../models/content.model");
 const types_model_1 = require("../models/types.model");
 const mongoose_1 = __importDefault(require("mongoose"));
 const contnet_types_1 = require("../types/contnet.types");
+const huggingface_utils_1 = require("../utils/huggingface.utils");
+const cosineSimilarity_utils_1 = require("../utils/cosineSimilarity.utils");
 exports.contentRouter = express_1.default.Router();
 exports.contentRouter.get("/", (req, res, next) => {
     try {
@@ -61,6 +63,8 @@ exports.contentRouter.post("/content", authMiddleware_1.default,
         else {
             console.log("No tags provided");
         }
+        const fullText = `${title} ${description} ${link}`;
+        const embedding = yield (0, huggingface_utils_1.getTextEmbedding)(fullText);
         const content = yield content_model_1.ContentModel.create({
             userId,
             link,
@@ -68,6 +72,7 @@ exports.contentRouter.post("/content", authMiddleware_1.default,
             type,
             description,
             tags: tagIds,
+            embedding,
         });
         return res.status(status_types_1.HttpStatus.Created).json({
             success: status_types_1.ApiStatus.Success,
@@ -114,7 +119,10 @@ exports.contentRouter.put("/", authMiddleware_1.default,
             findContent.title = valid.data.title;
             findContent.link = valid.data.link;
             findContent.type = valid.data.type;
-            findContent.description = valid.data.description; // ✅ Added description update
+            findContent.description = valid.data.description;
+            const updatedText = `${valid.data.title} ${valid.data.description} ${valid.data.link}`;
+            const embedding = yield (0, huggingface_utils_1.getTextEmbedding)(updatedText);
+            findContent.embedding = embedding;
             if (valid.data.tags) {
                 const tagIds = [];
                 for (const tagTitle of valid.data.tags) {
@@ -236,5 +244,36 @@ exports.contentRouter.get("/menu-list", authMiddleware_1.default,
     }
     catch (error) {
         console.log("Error ", Error);
+    }
+}));
+exports.contentRouter.post("/semantic-search", authMiddleware_1.default, 
+// @ts-ignore
+(req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { query } = req.body;
+        const userId = req.userId;
+        if (!query || typeof query !== "string") {
+            return res.status(400).json({
+                success: status_types_1.ApiStatus.Error,
+                msg: "Query is required",
+            });
+        }
+        const queryEmbedding = yield (0, huggingface_utils_1.getTextEmbedding)(query);
+        const allContent = yield content_model_1.ContentModel.find({ userId });
+        const ranked = allContent.map(item => {
+            const similarity = (0, cosineSimilarity_utils_1.cosineSimilarity)(queryEmbedding, item.embedding);
+            return { item, similarity };
+        });
+        ranked.sort((a, b) => b.similarity - a.similarity);
+        const topMatches = ranked.slice(0, 10).map(r => r.item);
+        return res.status(200).json({
+            success: status_types_1.ApiStatus.Success,
+            msg: "Semantic results fetched",
+            data: topMatches,
+        });
+    }
+    catch (error) {
+        console.error("Semantic Search Error:", error);
+        next(error);
     }
 }));

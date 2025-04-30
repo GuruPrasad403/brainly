@@ -8,6 +8,8 @@ const ContentSchema = new mongoose.Schema<ContentTypes>({
   description: { type: String, required: true }, 
   tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "TagModel" }],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel", required: true },
+  embedding: { type: [Number], required: true }
+
 });
 
 const ContentModel = mongoose.model<ContentTypes>("ContentModel", ContentSchema);

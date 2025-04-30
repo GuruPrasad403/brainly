@@ -14,6 +14,7 @@ interface ContentTypes  extends mongoose.Document{
   tags: [{ type: mongoose.Schema.Types.ObjectId, ref: string }],
   description :{type: String, required: true},
   userId: { type: mongoose.Schema.Types.ObjectId, ref: string, required: boolean },
+  embedding: number[];
 }
 
 export {ContentTypes,contentTypes}
