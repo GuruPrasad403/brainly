@@ -3,7 +3,7 @@ import { LuBrainCircuit } from "react-icons/lu";
 import Heading from "./Heading";
 function Brainly():JSX.Element{
     return(
-        <div className="flex justify-start  items-center  text-white">
+        <div className="flex justify-start  items-center  ">
             
                 <div className="flex justify-start items-center">
                     <LuBrainCircuit  className="text-5xl md:text-7xl"/>

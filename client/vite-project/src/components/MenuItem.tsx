@@ -30,7 +30,7 @@ function Menuitem(){
          className='flex justify-center items-center gap-1'> <TiThMenu /><span>Close List</span>
         </div>} 
          {/* drop down menu  */}
-          {!open ?<div className='flex justify-around flex-col items-center bg-gray-900 w-full top-8 gap-5 text-xl p-5 absolute rounded-b-2xl z-99'>
+          {!open ?<div className='flex justify-around flex-col items-center  w-full top-8 gap-5 text-xl p-5 absolute rounded-b-2xl z-99'>
              <p onClick={handelOnClick} className=' capitalize border-b-1 border-amber-50 w-full text-center '>{contentTypes.link}</p>
              <p onClick={handelOnClick} className=' capitalize border-b-1 border-amber-50 w-full text-center '>{contentTypes.tweet}</p>
              <p onClick={handelOnClick} className=' capitalize border-b-1 border-amber-50 w-full text-center '>{contentTypes.article}</p>

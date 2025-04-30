@@ -98,8 +98,8 @@ const handelSubmitResend = useCallback(async () => {
     }
   }, [navigate]);
   
-    return(<div className="flex justify-center items-center text-white w-full min-h-screen bg-gray-800 p-4">
-      <div className="flex justify-around gap-4 flex-col items-center w-full max-w-sm md:max-w-md lg:max-w-lg px-4 sm:px-6 py-8 rounded-xl sm:rounded-2xl md:rounded-3xl bg-gray-700 shadow-lg">
+    return(<div className="flex justify-center items-center w-full min-h-screen  p-4">
+      <div className="flex justify-around gap-4 flex-col items-center w-full max-w-sm md:max-w-md lg:max-w-lg px-4 sm:px-6 py-8 rounded-xl sm:rounded-2xl md:rounded-3xl  shadow-lg">
           <div className="w-full text-center">
               <Heading value={"OTP Verification"}/>
           </div>

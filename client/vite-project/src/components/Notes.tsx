@@ -34,10 +34,10 @@ function Notes(): JSX.Element {
             ref={el => {
               ref.current[i] = el;
             }}
-            className="w-full h-96 bg-gray-700 text-gray-200 rounded-2xl overflow-hidden p-4 flex flex-col gap-4 shadow-md"
+            className="w-full h-96  rounded-2xl overflow-hidden p-4 flex flex-col gap-4 shadow-md"
             onClick={handelClick}
           >
-            <div className="text-white">
+            <div className="">
               <Heading value={`${note?.title.slice(0, 15)}...`} />
             </div>
             <div className="text-justify overflow-y-auto h-50">
@@ -48,7 +48,7 @@ function Notes(): JSX.Element {
                 href={note?.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-amber-300 hover:underline"
+                className="flex items-center gap-2  hover:underline"
               >
                 <IoIosLink className="text-2xl" />
                 <span className="text-lg">{note?.type}</span>
@@ -58,7 +58,7 @@ function Notes(): JSX.Element {
               {note?.tags?.map((ele: any) => (
                 <span
                   key={ele?._id}
-                  className="bg-gray-900 text-white text-xs px-3 py-1 rounded-full"
+                  className="border-1  text-xs px-3 py-1 rounded-full"
                 >
                   {ele?.title}
                 </span>

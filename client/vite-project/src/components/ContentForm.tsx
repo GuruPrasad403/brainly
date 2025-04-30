@@ -131,7 +131,7 @@ function ContentForm(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-col bg-gray-700 rounded-2xl w-full max-w-lg text-white px-6 py-6 md:py-8 md:px-10 shadow-lg">
+    <div className="flex flex-col  rounded-2xl w-full max-w-lg  px-6 py-6 md:py-8 md:px-10 shadow-lg">
       <div className="flex justify-between items-center text-amber-300 font-semibold mb-4">
         <SubHeading value={`${contentData?._id ? "Edit Memory" : "Create New Memory"}`} />
         <div onClick={handleRemove} className="hover:text-amber-200 p-2 cursor-pointer rounded-full">

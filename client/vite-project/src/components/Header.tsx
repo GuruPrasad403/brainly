@@ -5,7 +5,7 @@ import MenuItem from './MenuItem'
 
 function Header(): JSX.Element {
   return (
-    <header className="bg-gray-800 text-white ">
+    <header className=" ">
       <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 max-w-full mx-auto gap-10">
         <div className="flex w-full sm:w-auto justify-between items-center mb-3 sm:mb-0">
           <div className="flex-shrink-0">

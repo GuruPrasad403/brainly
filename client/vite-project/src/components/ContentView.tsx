@@ -64,7 +64,7 @@ const handelDelete = useCallback(async () => {
     {
         (editContent) ? 
     
-        <div className='bg-amber-300 text-gray-900 p-5 '>
+        <div className=' p-5 '>
         <div className='flex justify-between items-center  font-semibold '>
                 <Heading value={"View Memory"} />
                 <div  className='hover:text-gray-500 p-2  cursor-pointer rounded-full' onClick={handelClick}>

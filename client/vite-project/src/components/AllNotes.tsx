@@ -55,7 +55,7 @@ function AllNotes(): JSX.Element {
       {/* Header section */}
       <div className=" flex justify-between items-center">
             <div className="mx-2 md:mx-10 ">
-                <h1 className="text-xl font-semibold md:text-3xl md:mt-2  text-amber-300">All Notes</h1>
+                <h1 className="text-xl font-semibold md:text-3xl md:mt-2  text-gray-900">All Notes</h1>
             </div>
             <div className="flex justify-between items-center md:gap-10 mx-5 mt-5 text-white ">
 

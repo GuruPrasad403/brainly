@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@motionone/utils": "^10.18.0",
     "@tailwindcss/vite": "^4.1.4",
     "@types/recoil": "^0.0.9",
+    "framer-motion": "^12.9.2",
+    "motion": "^12.9.2",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

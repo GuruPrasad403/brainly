@@ -97,8 +97,8 @@ const handelSubmit = useCallback(
     } 
   }, [])
     return(
-        <div className='flex justify-center items-center w-full h-screen bg-gray-800  text-white'>
-            <div className='flex justify-around flex-col items-center rounded-xl m-2 max-w-96 md:max-w-full  bg-gray-700 p-10'>
+        <div className='flex justify-center items-center w-full h-screen   '>
+            <div className='flex justify-around flex-col items-center rounded-xl m-2 max-w-96 md:max-w-full  p-10'>
                 <div className='flex justify-around items-center flex-col'>
                 <Heading value={"Sign in"}/>
                 <SubHeading value={"Brainly - Your Second Brain Application"} />
