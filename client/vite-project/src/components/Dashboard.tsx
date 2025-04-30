@@ -10,7 +10,7 @@ function Dashboard(): JSX.Element {
   const { addContent, viewContent }: any = useInfoContext();
 
   return (
-    <div className={`flex flex-col relative w-full h-screen  ${addContent || viewContent ? "overflow-hidden" : "overflow-y-auto"}`}>
+    <div className={`flex flex-col relative w-full h-screen bg-black text-white ${addContent || viewContent ? "overflow-hidden" : "overflow-y-auto"}`}>
       {/* Overlay layers */}
       {addContent && (
         <Layer>

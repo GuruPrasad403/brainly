@@ -6,7 +6,7 @@ function Hero(){
     const navigate = useNavigate()
     return(
         <div className=" relative flex flex-col gap-5  py-15 md:py-25 justify-center  bg-violet-600 items-start w-full h-full">
-             {/* <div className="absolute  w-full h-full  p-0 m-0">
+             <div className="absolute  w-full h-full  p-0 m-0">
              <div className="lines">
   <div className="line"></div>
   <div className="line"></div>
@@ -20,7 +20,7 @@ function Hero(){
 </div>
 
              </div>
-              */}
+             
              
              <div className="flex w-full md:w-8/12 z-99 ">
                 <motion.h1 

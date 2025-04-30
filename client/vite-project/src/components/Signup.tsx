@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from './Loader';
 import { useInfoContext } from '../context/UserContext';
 import LandingHeader from './LandingHeader';
+import { motion } from 'framer-motion';
 function Signup(): JSX.Element{
     const {setUser} :any = useInfoContext();
     const [loading,setLoading] = useState<boolean>(false);
@@ -110,13 +111,22 @@ const handelSubmit = useCallback(
     } 
   }, [])
     return(
-        <div className='grid grid-cols-1 grid-rows-12 w-full h-screen  overflow-hidden bg-black text-white'>
+        <motion.div 
+        initial={{ opacity: 0,x: -2000 }}
+        animate={{ opacity: 1,x:0 }}
+        transition={{ duration: 0.5 ,delay: 0.2, stiffness: 100}}
+        
+        className='grid grid-cols-1 grid-rows-12 w-full h-screen  overflow-hidden bg-black text-white'>
           <div className='col-span-1 row-span-1  w-full h-full '>
             <LandingHeader />
           </div>
-          <div className='col-span-1 row-span-11  w-full h-full flex justify-center items-center'>
+          <motion.div 
+          initial={{ opacity: 0,x: 2000 }}
+          animate={{ opacity: 1,x:0 }}
+          transition={{ duration: 0.5 ,delay: 0.5, stiffness: 100}}  
+          className='col-span-1 row-span-11  w-full h-full flex justify-center items-center'>
             <div className='flex justify-around flex-col items-center rounded-xl m-2  p-2 md:p-5 max-w-92 md:max-w-full bg-violet-800'>
-                <div className='flex justify-around items-center flex-col'>
+                <div className='flex justify-around items-center flex-col uppercase'>
                 <Heading value={"Sign up"}/>
                 <SubHeading value={"Brainly - Your Second Brain Application"} />
                 </div>
@@ -125,7 +135,7 @@ const handelSubmit = useCallback(
                     <Input type={types.text} value={userInfo?.name} name={"name"} handelChange={handelChange} placeholder={"Enter your name  "} lableName={"Name"} error={error?.name}/>
                     <Input type={types.password} value={userInfo?.password} name={"password"} handelChange={handelChange} placeholder={"Enter your password  "} lableName={"Password"} error={error?.password}/>
                 </div>
-                <div className='w-full h-full px-10'>
+                <div className='w-full h-full px-10 font-semibold'>
                     {
                         loading ? <Loader /> :<Button handelSubmit={handelSubmit} value={"Sign Up"}/>
 
@@ -135,8 +145,8 @@ const handelSubmit = useCallback(
                     <SubHeading value={"Already Have an Account "} link={"signin"} linkValue={"Sign in"}/>
                 </div>
             </div>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     )
 }
 

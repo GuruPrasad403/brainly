@@ -74,7 +74,8 @@ export type InputTypes = {
     link ="link",
     tweet="tweet",
     article="article",
-    youtube="youtube"
+    youtube="youtube",
+    all="all"
     }
 
     

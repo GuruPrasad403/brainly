@@ -7,10 +7,9 @@ import Button from './Button'
 import { useInfoContext } from '../context/UserContext'
 import ContentForm from './ContentForm'
 import toast from 'react-hot-toast'
-
+import {motion} from 'framer-motion'
 function ContentView():JSX.Element{
     const {setViewContent,note,editContent,setEditContent,setContentData,setTagsInput} :any = useInfoContext()
-    console.log(note[0])
     const handelClick = useCallback(()=>{
         setViewContent(false)
     },[setViewContent]);
@@ -64,7 +63,7 @@ const handelDelete = useCallback(async () => {
     {
         (editContent) ? 
     
-        <div className=' p-5 '>
+        <div className=' p-5 bg-black max-w-md overflow-hidden'>
         <div className='flex justify-between items-center  font-semibold '>
                 <Heading value={"View Memory"} />
                 <div  className='hover:text-gray-500 p-2  cursor-pointer rounded-full' onClick={handelClick}>
@@ -72,16 +71,23 @@ const handelDelete = useCallback(async () => {
                 </div>
               </div> 
         <div>
-            <div className='text-2xl md:text-6xl font-semibold text-amber-700'>
+            <div className='text-2xl md:text-6xl font-semibold text-violet-300'>
             <SubHeading value={note[0]?.title}/>
             </div>
-            <div className='p-5 text-justify text-md sm:text-lg md:text-xl w-full max-h-96 overflow-y-auto text-wrap'>
-                <p>
+            <motion.div 
+            initial={{ opacity: 0, y: 100 ,overflow:"hidden"}}
+            animate={{ opacity: 1, y: 0 }}
+            className='p-5 text-justify text-md sm:text-lg md:text-xl text-white w-full max-h-96 overflow-y-auto text-wrap'>
+                <motion.p
+                initial={{ opacity: 0, y: 100 ,overflow:"hidden"}}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5, stiffness: 100 }}
+                >
                 {
                     note[0]?.description
                 }
-                </p>
-            </div>                    
+                </motion.p>
+            </motion.div>                    
         <div className="flex flex-wrap gap-2 m-3">
                 {
                     note[0]?.tags?.map((ele : {_id:string,title:string}) => {

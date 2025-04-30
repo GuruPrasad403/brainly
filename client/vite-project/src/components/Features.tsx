@@ -41,7 +41,7 @@ function Features(){
                     </div>
                     <div className='flex justify-center items-center flex-col'>
                         <h1 className='font-semibold  text-2xl'>Access Anytime, Anywhere</h1>
-                        <p className=' text-center my-2 text-lg text-gray-400'>Retrieve your stored information offline, thanks to seamless PWA integration.</p>
+                        <p className=' text-center my-2 sm:text-2xl text-lg text-gray-400'>Retrieve your stored information offline, thanks to seamless PWA integration.</p>
                     </div>
                 </div>
             </motion.div>
@@ -56,7 +56,7 @@ function Features(){
                     </div>
                     <div className='flex justify-center items-center flex-col'>
                         <h1 className='font-semibold  text-2xl'>Fast Search Functionality</h1>
-                        <p className=' text-center my-2 text-lg text-gray-400'>Use powerful search filters to quickly find the information you need.</p>
+                        <p className=' text-center my-2 sm:text-2xl text-lg text-gray-400'>Use powerful search filters to quickly find the information you need.</p>
                     </div>
                 </div>
             </motion.div>

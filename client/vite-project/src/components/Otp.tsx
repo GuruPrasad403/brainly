@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import Loader from "./Loader";
 import toast from "react-hot-toast";
-
+import LandingHeader from "./LandingHeader";
+import { motion } from "framer-motion";
 function Otp():JSX.Element{
     const [userData,setUserData] = useState<{otp:string}>({
         otp:"",
@@ -98,12 +99,26 @@ const handelSubmitResend = useCallback(async () => {
     }
   }, [navigate]);
   
-    return(<div className="flex justify-center items-center w-full min-h-screen  p-4">
-      <div className="flex justify-around gap-4 flex-col items-center w-full max-w-sm md:max-w-md lg:max-w-lg px-4 sm:px-6 py-8 rounded-xl sm:rounded-2xl md:rounded-3xl  shadow-lg">
+    return(
+    <motion.div
+    initial={{ opacity: 0, x: -2000 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.5, delay: 0.2, stiffness: 100 }}
+     className="grid grid-cols-1 grid-rows-9 overflow-hidden w-full h-full bg-black text-white">
+      <div className="row-span-1 ">
+          <LandingHeader />
+      </div>
+      <div className="row-span-7 flex justify-center items-center w-full   ">
+      <motion.div
+      initial={{ opacity: 0,x: 2000 }}
+      animate={{ opacity: 1,x:0 }}
+      transition={{ duration: 0.5 ,delay: 0.5, stiffness: 100}}  
+      exit={{ opacity: 0, x: -2000 }}
+       className="bg-violet-500 flex justify-around gap-4 flex-col items-center w-full max-w-sm md:max-w-md lg:max-w-lg px-4 sm:px-6 py-8 rounded-xl sm:rounded-2xl md:rounded-3xl  shadow-lg">
           <div className="w-full text-center">
               <Heading value={"OTP Verification"}/>
           </div>
-          <div className="w-full">
+          <div className="w-full pl-10">
               <Input 
                   type={types.text} 
                   name="otp" 
@@ -114,7 +129,7 @@ const handelSubmitResend = useCallback(async () => {
                   handelChange={handelChange} 
               />
           </div>
-          <div className="w-full flex flex-col sm:flex-row items-center gap-3 sm:gap-4 justify-center my-2">
+          <div className="w-full flex flex-col sm:flex-row items-center gap-3 sm:gap-4 justify-center my-2 px-10">
               {!loading ? (
                   <>
                       <Button value="Check OTP" handelSubmit={handelSubmitCheck}/>
@@ -128,8 +143,9 @@ const handelSubmitResend = useCallback(async () => {
           <div className="w-96 text-center sm:text-left text-sm sm:text-base">
               <SubHeading value="Please check your Mail/Spam. OTP will expire in 10 minutes"/>
           </div>
+      </motion.div>
       </div>
-  </div>
+  </motion.div>
     )
 }
 

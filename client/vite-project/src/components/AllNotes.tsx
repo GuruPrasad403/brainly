@@ -39,23 +39,20 @@ function AllNotes(): JSX.Element {
       setLoading(false)
       return [];
     }
-  }, [setNotes,editContent,contentData,setContentData]);
+  }, []);
 
   useEffect(() => {
     getData();
   }, [addContent, getData]);
 
-  const handelClick = useCallback((e:MouseEvent<HTMLDivElement>)=>{
-    setViewContent(true)
-    console.log(e.target)
-  },[setViewContent])
+
 
   return (
     <div className=" flex flex-col w-full h-full px-4 py-6 md:px-10"  >
       {/* Header section */}
       <div className=" flex justify-between items-center">
             <div className="mx-2 md:mx-10 ">
-                <h1 className="text-xl font-semibold md:text-3xl md:mt-2  text-gray-900">All Notes</h1>
+                <h1 className="text-xl font-semibold md:text-3xl md:mt-2  text-white">All Notes</h1>
             </div>
             <div className="flex justify-between items-center md:gap-10 mx-5 mt-5 text-white ">
 
@@ -66,7 +63,7 @@ function AllNotes(): JSX.Element {
         </div>
       {/* Notes Grid */}
       <div className="mt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 pb-10" onClick={handelClick}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
           {
             loading ? <ShimmerNotes /> : <Notes />
           }

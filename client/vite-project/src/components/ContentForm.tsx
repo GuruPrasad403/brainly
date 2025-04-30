@@ -8,7 +8,7 @@ import Textarea from './Textarea';
 import Button from './Button';
 import Loader from './Loader';
 import { toast } from 'react-hot-toast';
-
+import { motion } from 'framer-motion';
 interface ContentErrorTypes {
   title?: string;
   link?: string;
@@ -131,55 +131,91 @@ function ContentForm(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-col  rounded-2xl w-full max-w-lg  px-6 py-6 md:py-8 md:px-10 shadow-lg">
-      <div className="flex justify-between items-center text-amber-300 font-semibold mb-4">
-        <SubHeading value={`${contentData?._id ? "Edit Memory" : "Create New Memory"}`} />
-        <div onClick={handleRemove} className="hover:text-amber-200 p-2 cursor-pointer rounded-full">
-          <GrClose className="text-xl font-bold" />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <Input {...{ type: types.text, lableName: 'Title', name: 'title', value: contentData.title, placeholder: 'Enter your title', error: error.title || "", handelChange: handleChange }} />
-        <Input {...{ type: types.link, lableName: 'Link', name: 'link', value: contentData.link, placeholder: 'Enter your Link', error: error.link || "", handelChange: handleChange }} />
-        <Textarea {...{ lableName: 'Description', name: 'description', value: contentData.description, placeholder: 'Enter your Description', error: error.description || "", handelChangeTextarea: handleChange }} />
-
-        <Input
-          type={types.text}
-          lableName="Tags"
-          name="tags"
-          value={tagsInput}
-          placeholder="Enter your Tags (Comma or space separated)"
-          error={error.tags || ""}
-          handelChange={handleTagsChange}
-        />
-
-        <div className="flex flex-col">
-          <label className="text-sm font-semibold mb-1 text-white">Type</label>
-          <select
-            name="type"
-            value={contentData.type}
-            onChange={handleTypeChange}
-            className="bg-gray-800 text-white p-2 rounded-md focus:outline-none"
-          >
-            <option value="">Select type</option>
-            <option value="link">Link</option>
-            <option value="tweet">Tweet</option>
-            <option value="article">Article</option>
-            <option value="youtube">YouTube</option>
-          </select>
-          {error.type && <span className="text-xs text-red-500">{error.type}</span>}
-        </div>
-      </div>
-
-      <div className="w-full mt-6">
-        {loading ? (
-          <Loader />
-        ) : (
-          <Button value={contentData?._id ? 'Update Memory' : 'Add Memory'} handelSubmit={handleSubmit} />
-        )}
-      </div>
+    <div className="flex flex-col rounded-2xl w-full max-w-lg px-4 py-6 sm:px-6 sm:py-8 md:px-10 shadow-lg bg-black">
+  <div className="flex justify-between items-center text-violet-300 font-semibold mb-4">
+    <SubHeading value={`${contentData?._id ? "Edit Memory" : "Create New Memory"}`} />
+    <div onClick={handleRemove} className="hover:text-amber-200 p-2 cursor-pointer rounded-full">
+      <GrClose className="text-xl font-bold" />
     </div>
+  </div>
+
+  <div className="flex flex-col gap-4">
+    <Input
+      {...{
+        type: types.text,
+        lableName: 'Title',
+        name: 'title',
+        value: contentData.title,
+        placeholder: 'Enter your title',
+        error: error.title || '',
+        handelChange: handleChange,
+      }}
+    />
+    <Input
+      {...{
+        type: types.link,
+        lableName: 'Link',
+        name: 'link',
+        value: contentData.link,
+        placeholder: 'Enter your Link',
+        error: error.link || '',
+        handelChange: handleChange,
+      }}
+    />
+    <Textarea
+      {...{
+        lableName: 'Description',
+        name: 'description',
+        value: contentData.description,
+        placeholder: 'Enter your Description',
+        error: error.description || '',
+        handelChangeTextarea: handleChange,
+      }}
+    />
+    <Input
+      type={types.text}
+      lableName="Tags"
+      name="tags"
+      value={tagsInput}
+      placeholder="Enter your Tags (Comma or space separated)"
+      error={error.tags || ''}
+      handelChange={handleTagsChange}
+    />
+
+    <div className="flex flex-col">
+      <motion.label
+      initial={{ opacity: 0, scale: 0 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: 0.5 }}
+      className="text-sm font-semibold mb-1 text-white">Type</motion.label>
+      <motion.select
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.5 }}
+        name="type"
+        value={contentData.type}
+        onChange={handleTypeChange}
+        className="bg-gray-800 text-white p-2 rounded-md focus:outline-none"
+      >
+        <option value="">Select type</option>
+        <option value="link">Link</option>
+        <option value="tweet">Tweet</option>
+        <option value="article">Article</option>
+        <option value="youtube">YouTube</option>
+      </motion.select>
+      {error.type && <span className="text-xs text-red-500">{error.type}</span>}
+    </div>
+  </div>
+
+  <div className="w-full mt-6">
+    {loading ? (
+      <Loader />
+    ) : (
+      <Button value={contentData?._id ? 'Update Memory' : 'Add Memory'} handelSubmit={handleSubmit} />
+    )}
+  </div>
+</div>
+
   );
 }
 

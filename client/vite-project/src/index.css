@@ -121,3 +121,29 @@
     }
   }
   
+
+
+  /* shimmer-dark.css */
+.shimmer-effect-dark {
+  background: linear-gradient(
+    to right,
+    #5b21b6 0%,
+    #7c3aed 25%,
+    #6d28d9 50%,
+    #5b21b6 100%
+  );
+  
+  background-size: 1000px 100%;
+  animation: shimmer 1.8s infinite linear;
+  border-radius: 6px;
+  opacity: 0.7;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}

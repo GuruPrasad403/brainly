@@ -1,30 +1,51 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
+
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       injectRegister: 'auto',
+      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'second-brain',
-        short_name: 'second brain',
-        description: 'Second brain PWA app',
+        name: 'Second Brain',
+        short_name: 'Brain',
+        description: 'Your second brain for saving ideas and links.',
         theme_color: '#123f0c',
-        background_color: '#ffffff',
+        background_color: '#000000',
         display: 'standalone',
         start_url: '/',
         icons: [
-         
+          {
+            src: '/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          },
+          {
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
+          }
         ]
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
+        navigateFallback: '/index.html',
         runtimeCaching: [
+          // HTML fallback
           {
             urlPattern: ({ request }) => request.destination === 'document',
             handler: 'NetworkFirst',
@@ -32,13 +53,16 @@ export default defineConfig({
               cacheName: 'html-cache',
             },
           },
+          // CSS and JS
           {
-            urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
+            urlPattern: ({ request }) =>
+              request.destination === 'script' || request.destination === 'style',
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'assets-cache',
             },
           },
+          // Images
           {
             urlPattern: ({ request }) => request.destination === 'image',
             handler: 'CacheFirst',
@@ -50,16 +74,29 @@ export default defineConfig({
               },
             },
           },
+          // ✅ API / JSON data
+          {
+            urlPattern: /\/api\/.*\/*.json/, // match your API or adjust this regex
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 10,
+              expiration: {
+                maxEntries: 30,
+                maxAgeSeconds: 24 * 60 * 60, // 1 day
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
         ],
-        cleanupOutdatedCaches: true,
-        clientsClaim: true,
-        skipWaiting: true,
       },
       devOptions: {
-        enabled: false,
+        enabled: true,
         type: 'module',
-        navigateFallback: 'index.html',
+        navigateFallback: '/index.html',
       },
     }),
   ],
-})
+});
