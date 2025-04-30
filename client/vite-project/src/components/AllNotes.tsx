@@ -1,4 +1,4 @@
-import React, { JSX, MouseEvent, useCallback, useEffect } from "react";
+import React, { JSX, useCallback, useEffect } from "react";
 import Button from "./Button";
 import { useInfoContext } from "../context/UserContext";
 import Notes from "./Notes";
@@ -29,7 +29,7 @@ function AllNotes(): JSX.Element {
 
       if (!res.ok) {
         console.error("Error fetching content:", data?.msg || data?.error);
-        return [];
+        return [setViewContent,editContent,contentData];
       }
 
       setNotes(data.content || []);
