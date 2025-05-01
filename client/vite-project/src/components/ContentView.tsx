@@ -18,6 +18,7 @@ function ContentView():JSX.Element{
     const handelShare = useCallback(async () => {
       try {
         setLoading(true);
+    
         const response = await fetch(`https://brainly-ld5q.onrender.com/api/v1/link`, {
           method: "POST",
           headers: {
@@ -31,22 +32,29 @@ function ContentView():JSX.Element{
     
         const result = await response.json();
     
-        if (!response.ok) {
-          throw new Error(result?.msg || "Share failed");
+        // Handle both newly created and already existing link
+        const linkData = result?.data || result?.existingLink;
+        if (!linkData?._id) {
+          throw new Error(result?.msg || "Failed to get a valid link ID");
         }
     
-        const linkId = result?.data?._id;
         const currentUrl = window.location;
-        const sharedUrl = `${currentUrl.protocol}//${currentUrl.host}/link/${linkId}`;
+        const sharedUrl = `${currentUrl.protocol}//${currentUrl.host}/link/${linkData?.contentId}`;
+    
         setUrl(sharedUrl);
         setViewContent(false);
         setSharedContent(true);
-        toast.success("Link shared successfully");
+    
+        const successMsg = response.status === 409 
+          ? "Link already exists and reused" 
+          : "Link shared successfully";
+    
+        toast.success(successMsg);
       } catch (error) {
-        console.error(error);
+        console.error("Share Error:", error);
         toast.error("Failed to share");
-      }finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     }, [note]);
     

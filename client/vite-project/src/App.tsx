@@ -7,6 +7,7 @@ import Otp from './components/Otp.tsx';
 import Dashboard from './components/Dashboard.tsx';
 import Example from './components/ShimmerNotes.tsx';
 import Landing from './components/Landing.tsx';
+import SharedBrain from './components/SharedBrain.tsx';
 function App() {
 
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/otp' element={<Otp />}/>
         <Route path='/lo' element={<Example />}/>
         <Route path='/dashboard' element={<Dashboard />}/>
+        <Route path='/link/:linkId' element={<SharedBrain />}/>
       </Routes>
       </BrowserRouter>
 
