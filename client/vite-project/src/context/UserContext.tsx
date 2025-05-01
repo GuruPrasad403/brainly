@@ -17,6 +17,8 @@ function UserProvider({ children }: { children: ReactNode }): JSX.Element {
   const [note,setNote] = useState<ContentTypes>()
   const [tagsInput, setTagsInput] = useState<string>("");
   const [copyNotes,setCopyNotes] = useState<ContentTypes[] >([])
+  const [sharedContent,setSharedContent] = useState<boolean>(false)
+  const [url,setUrl] = useState<string>("")
   const [contentData, setContentData] = useState<ContentTypes>({
       title: "",
       link: "",
@@ -36,7 +38,8 @@ function UserProvider({ children }: { children: ReactNode }): JSX.Element {
      value={{ user, setUser, addContent,setAddContent, notes,setNotes,viewContent,setViewContent
     ,note,setNote,contentData,setContentData,editContent,setEditContent,
     tagsInput, setTagsInput,copyNotes,setCopyNotes,
-    loading,setLoading}}>
+    sharedContent,setSharedContent,
+    url,setUrl,loading,setLoading}}>
       {children}
     </userContext.Provider>
   );

@@ -5,9 +5,10 @@ import AllNotes from "./AllNotes";
 import ContentForm from "./ContentForm";
 import Layer from "./Layer";
 import ContentView from "./ContentView";
+import SharePopUp from "./SharePopUp";
 
 function Dashboard(): JSX.Element {
-  const { addContent, viewContent }: any = useInfoContext();
+  const { addContent, viewContent,sharedContent }: any = useInfoContext();
 
   return (
     <div className={`flex flex-col relative w-full h-screen bg-black text-white ${addContent || viewContent ? "overflow-hidden" : "overflow-y-auto"}`}>
@@ -23,7 +24,11 @@ function Dashboard(): JSX.Element {
           <ContentView />
         </Layer>
       )}
-
+      {sharedContent && (
+        <Layer>
+          <SharePopUp />
+        </Layer>
+      )}
       {/* Main content */}
       <div className="flex-none w-full">
         <Header />

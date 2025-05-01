@@ -8,13 +8,48 @@ import { useInfoContext } from '../context/UserContext'
 import ContentForm from './ContentForm'
 import toast from 'react-hot-toast'
 import {motion} from 'framer-motion'
+import Loader from './Loader'
 function ContentView():JSX.Element{
-    const {setViewContent,note,editContent,setEditContent,setContentData,setTagsInput} :any = useInfoContext()
+    const {setViewContent,note,editContent,setEditContent,setContentData,setTagsInput,setSharedContent,setUrl} :any = useInfoContext()
     const handelClick = useCallback(()=>{
         setViewContent(false)
     },[setViewContent]);
-
-
+    const [loading,setLoading] = React.useState<boolean>(false)
+    const handelShare = useCallback(async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`https://brainly-ld5q.onrender.com/api/v1/link`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("Brain-Token")}`,
+          },
+          body: JSON.stringify({
+            contentId: note[0]?._id,
+          }),
+        });
+    
+        const result = await response.json();
+    
+        if (!response.ok) {
+          throw new Error(result?.msg || "Share failed");
+        }
+    
+        const linkId = result?.data?._id;
+        const currentUrl = window.location;
+        const sharedUrl = `${currentUrl.protocol}//${currentUrl.host}/link/${linkId}`;
+        setUrl(sharedUrl);
+        setViewContent(false);
+        setSharedContent(true);
+        toast.success("Link shared successfully");
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to share");
+      }finally{
+        setLoading(false)
+      }
+    }, [note]);
+    
 const handelEdit = useCallback(()=>{
     setEditContent(false)
     const tags = note[0]?.tags.map((ele:{_id:string,title:string})=>ele?.title).join(",")
@@ -64,6 +99,7 @@ const handelDelete = useCallback(async () => {
         (editContent) ? 
     
         <div className=' p-5 bg-black max-w-md overflow-hidden'>
+
         <div className='flex justify-between items-center  font-semibold '>
                 <Heading value={"View Memory"} />
                 <div  className='hover:text-gray-500 p-2  cursor-pointer rounded-full' onClick={handelClick}>
@@ -114,11 +150,11 @@ const handelDelete = useCallback(async () => {
         </div>
 
         <div className='w-full flex justify-between  items-center text-amber-200 gap-5 my-2'>
-            <Button value='Edit' handelSubmit={handelEdit}/>
+             <Button value='Edit' handelSubmit={handelEdit}/>
             <Button value='Delete' handelSubmit={handelDelete}/>
-            <Button value='Share' handelSubmit={()=>{
-                toast("Under Devlopment")
-            }}/>
+            {
+              loading? <Loader /> : <Button value='Share' handelSubmit={handelShare}/>
+            }
         </div>
         </div>
     </div> : 

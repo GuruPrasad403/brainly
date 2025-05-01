@@ -68,6 +68,10 @@ export type InputTypes = {
     setCopyNotes :React.Dispatch<React.SetStateAction<ContentTypes[]>>;
     loading:boolean;
     setLoading : React.Dispatch<React.SetStateAction<boolean>>;
+    sharedContent: boolean;
+    setSharedContent:React.Dispatch<React.SetStateAction<boolean>>
+    url:string;
+    setUrl:React.Dispatch<React.SetStateAction<string>>;
   }
   
   export enum contentTypes  {

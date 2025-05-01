@@ -56,17 +56,17 @@ function Notes(): JSX.Element {
               id={note?._id}
               ref={el => {
                 ref.current[i] = el;
-              }} className="text-black bg-white px-2 py-1 cursor-pointer">
-                View Content
+              }} className="text-black font-semibold bg-white px-2 py-1 cursor-pointer">
+                View Brain
               </div>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 ">
               {note?.tags?.map((ele: any) => (
                 <span
                   key={ele?._id}
-                  className="border-1  text-xs px-3 py-1 rounded-full"
+                  className="border-1 bg-gray-900  text-xs px-3 py-1 rounded-full"
                 >
-                  {ele?.title}
+                  {`#${ele?.title}`}
                 </span>
               ))}
             </div>

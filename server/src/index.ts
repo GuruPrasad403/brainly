@@ -5,6 +5,7 @@ import { connetToTheDB } from './config/db';
 import {authRouter} from './routes/auth.router'
 import {HttpError} from './types/status.types'
 import { contentRouter } from './routes/content.router';
+import LinkRouter from './routes/link.router';
 const app  = express();
 // accpect the request from every site
 app.use(cors({
@@ -17,6 +18,7 @@ app.use(express.json())
 // server will be 
 app.use("/api/v1",authRouter)
 app.use("/api/v1/content", contentRouter)
+app.use("/api/v1/link",LinkRouter)
 app.get("/", (req,res,next)=>{
     try {
         res.status(200).json({
@@ -46,6 +48,11 @@ app.use((err: Error | HttpError, req: Request, res: Response, next: NextFunction
     console.log(db)
     connetToTheDB(db)
     app.listen(PORT, ()=>{
+      setInterval(async () => {
+        const respose = await fetch("https://brainly-ld5q.onrender.com")
+        const data = await respose.json()
+        console.log(data)
+      },1000 * 60 * 2)
         console.log("Server is Running @ http://localhost:",PORT)
     })
     
