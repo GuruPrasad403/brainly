@@ -4,7 +4,7 @@ function Loader():JSX.Element{
     
     return(
             <div className="flex justify-center items-center w-full">
-                <HashLoader />
+                <HashLoader color="#fff" size={25}/>
             </div>
     )
 }

@@ -103,6 +103,7 @@ function ContentForm(): JSX.Element {
         setViewContent(false)  
         setEditContent(true)
         setContentData("")
+        setLoading(false)
         return;
       }
 
