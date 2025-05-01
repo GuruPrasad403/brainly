@@ -20,7 +20,7 @@ function SharePopUp(): JSX.Element {
         });
     },[url])
     return (
-       <div className="p-5 bg-black max-w-md overflow-hidden'">
+       <div className="p-5 bg-black w-full overflow-hidden'">
         
                 <div className='flex justify-between items-center  font-semibold '>
                         <SubHeading value={"Share Brain"} />
@@ -31,9 +31,9 @@ function SharePopUp(): JSX.Element {
 
                       <div>
                         <SubHeading value={"Share your brain with your friends"} />
-                        <div className="flex justify-center text-md items-center gap-2 mt-5 bg-gray-600 border-2  p-2">
+                        <div className="flex justify-center text-md items-center gap-2 flex-row mt-5 w-full h-full text-wrap flex-wrap bg-gray-600 border-2  p-2">
                             <span className="font-semibold">Brain URL:</span>
-                            <span className="">{url}</span>
+                            <span className="text-wrap">{url}</span>
                         </div>
                       </div>
                       <div className="flex justify-center items-center mt-5"> 

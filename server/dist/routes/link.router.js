@@ -46,7 +46,8 @@ linkRouter.post("/", authMiddleware_1.default,
         if (existingLink) {
             return res.status(status_types_1.HttpStatus.Conflict).json({
                 msg: "Link already exists",
-                success: status_types_1.ApiStatus.Warning
+                success: status_types_1.ApiStatus.Warning,
+                existingLink
             });
         }
         const link = yield link_model_1.LinkModel.create({

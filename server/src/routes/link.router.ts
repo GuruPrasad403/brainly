@@ -44,7 +44,8 @@ linkRouter.post("/",
         if (existingLink) {
           return res.status(HttpStatus.Conflict).json({
             msg: "Link already exists",
-            success: ApiStatus.Warning
+            success: ApiStatus.Warning,
+            existingLink
           });
         }
   
