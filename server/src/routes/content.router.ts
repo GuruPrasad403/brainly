@@ -291,20 +291,27 @@ contentRouter.post("/semantic-search", authMiddleware,
       const queryEmbedding = await getTextEmbedding(query);
       const allContent = await ContentModel.find({ userId });
 
-      const ranked = allContent.map(item => {
+      const ranked = allContent
+      .filter(item => Array.isArray(item.embedding) && item.embedding.length > 0)
+      .map(item => {
         const similarity = cosineSimilarity(queryEmbedding, item.embedding);
+        console.log(`[DEBUG] ${item.title} => similarity: ${similarity.toFixed(4)}`);
         return { item, similarity };
-      });
+      })
+      .filter(r => r.similarity > 0.3);
 
       ranked.sort((a, b) => b.similarity - a.similarity);
 
-      const topMatches = ranked.slice(0, 10).map(r => r.item);
-
+      const topMatches = ranked.slice(0, 10).map(({ item }) => {
+        const { embedding, ...rest } = item.toObject(); 
+        return rest;
+      });
       return res.status(200).json({
         success: ApiStatus.Success,
         msg: "Semantic results fetched",
         data: topMatches,
       });
+      
     } catch (error) {
       console.error("Semantic Search Error:", error);
       next(error);
