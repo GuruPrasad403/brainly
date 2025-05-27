@@ -10,7 +10,7 @@ const app  = express();
 // accpect the request from every site
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 // decode the body file to the json formate 
