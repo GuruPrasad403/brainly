@@ -11,7 +11,6 @@ const logger = winston.createLogger({
   transports: [new winston.transports.Console()]
 });
 
-// New Beautiful Email Template
 const otpEmailTemplate = (otp: string,name:string) => `
 <!DOCTYPE html>
 <html lang="en" style="margin:0;padding:0;background-color:#f9fafb;font-family:'Inter',sans-serif;">

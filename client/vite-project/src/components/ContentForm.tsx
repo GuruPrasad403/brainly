@@ -60,8 +60,8 @@ function ContentForm(): JSX.Element {
       const isEditing = Boolean(contentData?._id);
 
       const apiUrl = isEditing
-        ? `https://brainly-ld5q.onrender.com/api/v1/content?id=${contentData._id}`
-        : `https://brainly-ld5q.onrender.com/api/v1/content/content`;
+        ? `http://localhost:8000/api/v1/content?id=${contentData._id}`
+        : `http://localhost:8000/api/v1/content/content`;
 
       const method = isEditing ? "PUT" : "POST";
 

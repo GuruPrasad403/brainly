@@ -9,5 +9,4 @@ try {
     return ""
 }
 }
-
 export default genrateUnique

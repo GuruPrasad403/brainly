@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
-
 enum contentTypes  {
 link ="link",
 tweet="tweet",
 article="article",
 youtube="youtube"
 }
-
 interface ContentTypes  extends mongoose.Document{
   link: { type: String, required: true },
   type: { type: String, enum: contentTypes, required: true },

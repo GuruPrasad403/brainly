@@ -42,7 +42,7 @@ const handelSubmit = useCallback(
     e.preventDefault();
     setLoading(true)
     try {
-      const response = await fetch("https://brainly-ld5q.onrender.com/api/v1/signup", {
+      const response = await fetch("http://localhost:8000/api/v1/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,7 +130,7 @@ const handelSubmit = useCallback(
                 <Heading value={"Sign up"}/>
                 <SubHeading value={"Brainly - Your Second Brain Application"} />
                 </div>
-                <div className='flex justify-around items-start w-full px-10 flex-col my-5'>
+                <div className='flex justify-around items-center w-full px-10 flex-col my-5'>
                     <Input type={types.text} value={userInfo?.email} name={"email"} handelChange={handelChange} placeholder={"Enter your email id "} lableName={"Email"} error={error?.email}/>
                     <Input type={types.text} value={userInfo?.name} name={"name"} handelChange={handelChange} placeholder={"Enter your name  "} lableName={"Name"} error={error?.name}/>
                     <Input type={types.password} value={userInfo?.password} name={"password"} handelChange={handelChange} placeholder={"Enter your password  "} lableName={"Password"} error={error?.password}/>

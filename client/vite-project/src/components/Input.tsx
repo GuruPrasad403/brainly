@@ -22,7 +22,7 @@ function Input(prop: InputTypes): JSX.Element {
         autoComplete="off"
         onChange={prop?.handelChange}
         placeholder={prop?.placeholder}
-        className="outline-none border-2 px-5 py-2 w-full max-w-[375px] md:max-w-96 "
+        className="outline-none border-2 px-5 py-2 w-full max-w-[375px] md:max-w-full "
       />
       <p className="text-md md:text-lg text-red-300 w-96">{prop?.error}</p>
     </div>

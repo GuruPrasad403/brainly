@@ -12,13 +12,11 @@ function SharedBrain(): JSX.Element {
 
   const getData = useCallback(async () => {
     try {
-      const token = localStorage.getItem("Brain-Token");
       if(!linkId) return toast.error("No linkId found. Please check the URL.");
-      const response = await fetch(`https://brainly-ld5q.onrender.com/api/v1/link?linkId=${linkId}`, {
+      const response = await fetch(`http://localhost:8000/api/v1/link?linkId=${linkId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       });
 

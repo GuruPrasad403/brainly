@@ -19,6 +19,7 @@ app.use(express.json())
 app.use("/api/v1",authRouter)
 app.use("/api/v1/content", contentRouter)
 app.use("/api/v1/link",LinkRouter)
+// @ts-ignore
 app.get("/", (req,res,next)=>{
     try {
         res.status(200).json({

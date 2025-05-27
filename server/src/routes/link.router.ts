@@ -66,7 +66,7 @@ linkRouter.post("/",
     }
   );
 
-  linkRouter.get("/", authMiddleware,
+  linkRouter.get("/", 
     // @ts-ignore
     async (req: Request, res: Response, next: NextFunction) => {
       try {

@@ -32,6 +32,7 @@ app.use(express_1.default.json());
 app.use("/api/v1", auth_router_1.authRouter);
 app.use("/api/v1/content", content_router_1.contentRouter);
 app.use("/api/v1/link", link_router_1.default);
+// @ts-ignore
 app.get("/", (req, res, next) => {
     try {
         res.status(200).json({

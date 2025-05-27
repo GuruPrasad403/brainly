@@ -18,7 +18,7 @@ function Searchbar(): JSX.Element {
         navigate("/signin")
       }
 
-      const response = await fetch("https://brainly-ld5q.onrender.com/api/v1/content/semantic-search", {
+      const response = await fetch("http://localhost:8000/api/v1/content/semantic-search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
