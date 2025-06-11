@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 
 function SharePopUp(): JSX.Element {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const { setSharedContent, url }: any = useInfoContext();
 
     const handelClick = useCallback(() => {

@@ -8,6 +8,7 @@ import ContentView from "./ContentView";
 import SharePopUp from "./SharePopUp";
 
 function Dashboard(): JSX.Element {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const { addContent, viewContent,sharedContent }: any = useInfoContext();
 
   return (

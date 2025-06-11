@@ -18,6 +18,7 @@ interface ContentErrorTypes {
 }
 
 function ContentForm(): JSX.Element {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const { setAddContent, contentData, setContentData, setEditContent, setViewContent, tagsInput, setTagsInput }: any = useInfoContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ContentErrorTypes>({});
@@ -104,6 +105,7 @@ function ContentForm(): JSX.Element {
         setEditContent(true)
         setContentData("")
         setLoading(false)
+        
         return;
       }
 

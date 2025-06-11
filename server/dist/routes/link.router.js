@@ -65,22 +65,23 @@ linkRouter.post("/", authMiddleware_1.default,
         next(error);
     }
 }));
-linkRouter.get("/", authMiddleware_1.default, 
+linkRouter.get("/", 
 // @ts-ignore
 (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.userId;
         const linkId = req.query.linkId;
-        if (!userId || !linkId) {
+        console.log('linkkId , userId:', linkId, userId);
+        if (!linkId) {
             return res.status(status_types_1.HttpStatus.BadRequest).json({
                 msg: "No userId or linkId provided",
                 success: status_types_1.ApiStatus.Warning,
             });
         }
+        const Id = new mongoose_1.default.Types.ObjectId(linkId);
         const user_id = new mongoose_1.default.Types.ObjectId(userId);
         const linke = yield link_model_1.LinkModel.findOne({
-            userId: user_id,
-            contentId: linkId,
+            contentId: Id,
         })
             .populate("userId", "-password -__v -createdAt -updatedAt")
             .populate({
@@ -92,6 +93,7 @@ linkRouter.get("/", authMiddleware_1.default,
                 select: "title",
             },
         });
+        console.log(linke);
         if (!linke) {
             return res.status(status_types_1.HttpStatus.NotFound).json({
                 msg: "Link Not Found",

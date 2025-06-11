@@ -5,7 +5,8 @@ import Notes from "./Notes";
 import ShimmerNotes from "./ShimmerNotes";
 
 function AllNotes(): JSX.Element {
-  const { loading,setLoading,addContent, setAddContent, setNotes,setViewContent,editContent,contentData,setContentData,setTagsInput }: any = useInfoContext();
+/* eslint-disable @typescript-eslint/no-explicit-any */
+  const { loading,setLoading,addContent, setAddContent, setNotes,setViewContent,editContent,contentData,setContentData,setTagsInput } :any = useInfoContext();
 
   const handleAddContent = useCallback(() => {
     setContentData("")
@@ -17,7 +18,7 @@ function AllNotes(): JSX.Element {
     setLoading(true)
     try {
       const token = localStorage.getItem("Brain-Token");
-      const res = await fetch("https://brainly-ld5q.onrender.com/api/v1/content/all-info", {
+      const res = await fetch("http://localhost:8000/api/v1/content/all-info", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +44,7 @@ function AllNotes(): JSX.Element {
 
   useEffect(() => {
     getData();
-  }, [addContent, getData]);
+  }, [addContent, getData,editContent]);
 
 
 

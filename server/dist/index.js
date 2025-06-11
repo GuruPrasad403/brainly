@@ -21,11 +21,7 @@ const content_router_1 = require("./routes/content.router");
 const link_router_1 = __importDefault(require("./routes/link.router"));
 const app = (0, express_1.default)();
 // accpect the request from every site
-app.use((0, cors_1.default)({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use((0, cors_1.default)());
 // decode the body file to the json formate 
 app.use(express_1.default.json());
 // server will be 

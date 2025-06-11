@@ -11,6 +11,7 @@ import { useInfoContext } from '../context/UserContext';
 import LandingHeader from './LandingHeader';
 import { motion } from 'framer-motion';
 function Signup(): JSX.Element{
+  /* eslint-disable @typescript-eslint/no-explicit-any */
     const {setUser} :any = useInfoContext();
     const [loading,setLoading] = useState<boolean>(false);
     const [userInfo,setUserInfo] = useState<UserDataType>({
@@ -35,7 +36,7 @@ const handelSubmit = useCallback(
     e.preventDefault();
     setLoading(true)
     try {
-      const response = await fetch("https://brainly-ld5q.onrender.com/api/v1/signup", {
+      const response = await fetch("http://localhost:8000/api/v1/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

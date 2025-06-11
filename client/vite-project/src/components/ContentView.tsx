@@ -10,6 +10,7 @@ import toast from 'react-hot-toast'
 import {motion} from 'framer-motion'
 import Loader from './Loader'
 function ContentView():JSX.Element{
+  /* eslint-disable @typescript-eslint/no-explicit-any */
     const {setViewContent,note,editContent,setEditContent,setContentData,setTagsInput,setSharedContent,setUrl} :any = useInfoContext()
     const handelClick = useCallback(()=>{
         setViewContent(false)
@@ -19,7 +20,7 @@ function ContentView():JSX.Element{
       try {
         setLoading(true);
     
-        const response = await fetch(`https://brainly-ld5q.onrender.com/api/v1/link`, {
+        const response = await fetch(`http://localhost:8000/api/v1/link`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

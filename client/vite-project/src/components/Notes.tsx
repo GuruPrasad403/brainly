@@ -6,6 +6,7 @@ import { useInfoContext } from "../context/UserContext";
 import { ContentTypes } from './../types/content.types';
 
 function Notes(): JSX.Element {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const { notes, setViewContent,setNote,copyNotes,setCopyNotes }: any = useInfoContext();
   const ref = useRef<(HTMLDivElement | null)[]>([]);
   const handelClick = useCallback((e: MouseEvent<HTMLDivElement>) => {

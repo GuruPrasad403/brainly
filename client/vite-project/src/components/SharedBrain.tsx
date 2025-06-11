@@ -8,12 +8,13 @@ function SharedBrain(): JSX.Element {
   const { linkId } = useParams();
 //   const linkData = useParams();
   console.log(linkId);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [data, setData] = useState<any>(null);
 
   const getData = useCallback(async () => {
     try {
       if(!linkId) return toast.error("No linkId found. Please check the URL.");
-      const response = await fetch(`https://brainly-ld5q.onrender.com/api/v1/link?linkId=${linkId}`, {
+      const response = await fetch(`http://localhost:8000/api/v1/link?linkId=${linkId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +37,7 @@ function SharedBrain(): JSX.Element {
 
   useEffect(() => {
     getData();
-  }, [linkId]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-white p-4 flex justify-center items-start">

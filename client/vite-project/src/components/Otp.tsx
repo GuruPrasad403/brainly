@@ -24,7 +24,7 @@ function Otp():JSX.Element{
     ...pre,
     [e.target.name]: e.target.value,
   }));
-}, [userData,error])
+}, [])
 
 const handelSubmitCheck = useCallback(async () => {
     setLoading(true);

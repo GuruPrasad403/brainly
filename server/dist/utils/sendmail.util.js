@@ -21,7 +21,6 @@ const logger = winston_1.default.createLogger({
     format: winston_1.default.format.combine(winston_1.default.format.timestamp(), winston_1.default.format.json()),
     transports: [new winston_1.default.transports.Console()]
 });
-// New Beautiful Email Template
 const otpEmailTemplate = (otp, name) => `
 <!DOCTYPE html>
 <html lang="en" style="margin:0;padding:0;background-color:#f9fafb;font-family:'Inter',sans-serif;">

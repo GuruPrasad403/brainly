@@ -72,19 +72,18 @@ linkRouter.post("/",
       try {
         const userId = (req as any).userId;
         const linkId = req.query.linkId as string;
-  
-        if (!userId || !linkId) {
+        console.log('linkkId , userId:', linkId , userId)
+        if (!linkId) {
           return res.status(HttpStatus.BadRequest).json({
             msg: "No userId or linkId provided",
             success: ApiStatus.Warning,
           });
         }
-  
+        const Id = new mongoose.Types.ObjectId(linkId)
         const user_id = new mongoose.Types.ObjectId(userId);
   
         const linke = await LinkModel.findOne({
-          userId: user_id,
-          contentId: linkId,
+          contentId: Id,
         })
           .populate("userId", "-password -__v -createdAt -updatedAt")
           .populate({
@@ -96,7 +95,8 @@ linkRouter.post("/",
               select: "title",
                     },
           });
-  
+          console.log(linke);
+          
         if (!linke) {
           return res.status(HttpStatus.NotFound).json({
             msg: "Link Not Found",

@@ -7,6 +7,7 @@ import Loader from "./Loader";
 function Searchbar(): JSX.Element {
   const [searchText, setSearchText] = React.useState<string>("");
   const navigate = useNavigate();
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const {setCopyNotes,notes,copyNotes} :any = useInfoContext()
   const [loading,setLoading] = useState<boolean>(false)
   const handelClick = useCallback(async () => {
@@ -18,7 +19,7 @@ function Searchbar(): JSX.Element {
         navigate("/signin")
       }
 
-      const response = await fetch("https://brainly-ld5q.onrender.com/api/v1/content/semantic-search", {
+      const response = await fetch("http://localhost:8000/api/v1/content/semantic-search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +50,7 @@ function Searchbar(): JSX.Element {
     finally {
       setLoading(false)
     }
-  }, [searchText]);
+  }, []);
 
   return (
     <div className="flex overflow-hidden max-w-full mx-auto">

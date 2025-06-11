@@ -7,6 +7,7 @@ import { useInfoContext } from '../context/UserContext';
 import { ContentTypes } from '../types/content.types';
 import toast from 'react-hot-toast';
 function Menuitem(){
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const {notes,setCopyNotes}:any = useInfoContext() 
     const [open,setOpen] = useState<boolean>(true)
     const handelClickMenu = useCallback(()=>{
