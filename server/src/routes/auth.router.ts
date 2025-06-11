@@ -1,9 +1,4 @@
-import express, {
-  Router,
-  Request,
-  Response,
-  NextFunction
-} from "express";
+import express, {Router,Request,Response,NextFunction } from "express";
 import { HttpStatus, ErrorType, ApiStatus } from "../types/status.types";
 import genrateUnique from "../utils/genrate.util.js";
 import { sendMail } from "../utils/sendmail.util";

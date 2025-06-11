@@ -1,11 +1,4 @@
-import React, {
-    ChangeEvent,
-    JSX,
-    useCallback,
-    useState,
-    MouseEvent,
-    useEffect, 
-  } from 'react';
+import React, {ChangeEvent,JSX,useCallback,useState,MouseEvent,useEffect, } from 'react';
 import Heading from './Heading'
 import SubHeading from './SubHeading'
 import Input from './Input'

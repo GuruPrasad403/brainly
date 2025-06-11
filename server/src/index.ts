@@ -8,11 +8,7 @@ import { contentRouter } from './routes/content.router';
 import LinkRouter from './routes/link.router';
 const app  = express();
 // accpect the request from every site
-app.use(cors({
-  origin: '*',
-  
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(cors());
 // decode the body file to the json formate 
 app.use(express.json())
 // server will be 

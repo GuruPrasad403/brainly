@@ -19,7 +19,7 @@ function ContentView():JSX.Element{
       try {
         setLoading(true);
     
-        const response = await fetch(`https://brainly-ld5q.onrender.comapi/v1/link`, {
+        const response = await fetch(`https://brainly-ld5q.onrender.com/api/v1/link`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

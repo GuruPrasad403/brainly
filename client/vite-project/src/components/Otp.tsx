@@ -37,7 +37,7 @@ const handelSubmitCheck = useCallback(async () => {
         return;
       }
   
-      const response = await fetch("https://brainly-ld5q.onrender.com/api/v1/verify", {
+      const response = await fetch("http://localhost:8000/api/v1/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const handelSubmitResend = useCallback(async () => {
         return;
       }
   
-      const response = await fetch("https://brainly-ld5q.onrender.com//api/v1/resend", {
+      const response = await fetch("http://localhost:8000/api/v1/resend", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
